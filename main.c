@@ -71,8 +71,8 @@ void menu(void){
 	switch(login_part){
 
 		case 1 :
-			ADMIN();
 			system("clear");
+			ADMIN();
 		
 		case 2 :
 			system("clear");
@@ -132,13 +132,47 @@ void ADMIN(void){
 
 
 void Admin_page(void){
-	 
-	int page ;
+	
+	int  page ; 
 
 	system("clear");
-	printf("TEST");
 	
+	printf("ADMIN MENU : \n\n");
+	printf("1 - Add Staff\n");
+	printf("2 - Staff List\n");
+	printf("3 - Delete Staff\n");
+	printf("4 - Logs\n");
+	printf("5 - Exit\n\n");
+
+	printf("Enter Your Choice : \n");
 	scanf("%d" , &page);
+
+
+	switch(page){
+		case 1:
+			//staff_add - PASS
+			break;
+
+		case 2:
+			//staff_list - PASS
+			break;
+
+		case 3:
+			// delet_staf - PASS
+			break;
+		case 4:
+			// logs - PASS
+			break;
+
+		case 5:
+			// exit
+			system("clear");
+			menu();
+
+		default:
+			printf("Please Enter Numbers 1 to 5!!!\n");
+			exit(0);
+	}	
 }
 
 
