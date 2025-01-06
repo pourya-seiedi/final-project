@@ -10,6 +10,7 @@ void menu(void);
 void ADMIN(void);
 void Admin_page(void);
 void timer(long long int failed_time);
+void Add_Staff(void);
 //---------------------------------------
 
 
@@ -150,8 +151,8 @@ void Admin_page(void){
 
 	switch(page){
 		case 1:
-			//staff_add - PASS
-			break;
+			Add_Staff();
+			Admin_page();
 
 		case 2:
 			//staff_list - PASS
@@ -174,6 +175,72 @@ void Admin_page(void){
 			exit(0);
 	}	
 }
+
+void Add_Staff(void){
+	
+	
+	char name[20] , lname[20] , hire_date[10] ;
+	char tel[12] , email[100] , user_name[20] ;
+	char password[20] ;
+
+	printf("Name : ");
+	scanf("%s" , name);
+
+
+	printf("Last Name : ");
+	scanf("%s" , lname);
+
+
+	printf("Telephon Number : ");
+	scanf("%s" , tel);
+	
+	printf("Email : ");
+	scanf("%s" , email);
+	
+	printf("User Name : ");
+	scanf("%s" , user_name);
+	
+	printf("Password : ");
+	scanf("%s" , password);
+
+	FILE *staff_data , *user_pass ;
+	staff_data = fopen("SATFF_DATA.txt" , "a");
+
+	fflush(staff_data);
+	fprintf(staff_data , "%-20s" , name);
+	fprintf(staff_data , "%-20s" , lname);
+
+	// hire date - PASS
+	fprintf(staff_data , "%-10s" , "----" );
+	//---------
+	
+	fprintf(staff_data , "%-15s" , tel );
+	fprintf(staff_data , "%-50s" , email);
+
+	// ???? 
+	//fprintf(staff_data , "%s" , user_name);
+	//fprintf(staff_data , "%s" , password);
+
+	fclose(staff_data);
+
+	user_pass = fopen("USER_PASS.txt" , "a");
+	fprintf(user_pass , "%-20s%-20s\n" , user_name , password);
+	fclose(user_pass);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 void timer(long long int failed_time){
