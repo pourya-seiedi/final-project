@@ -20,7 +20,13 @@ void timer(long long int failed_time);
 
 
 // global variable ----------------------
-char admin_user[5] = "ADMIN" , admin_password[10] = "1234567890" , attempt = 0  ;
+
+
+// admin
+char admin_user[] = "ADMIN" , admin_password[] = "1234567890" , attempt = 0;
+
+
+
 //---------------------------------------
 
 
@@ -34,7 +40,7 @@ char admin_user[5] = "ADMIN" , admin_password[10] = "1234567890" , attempt = 0  
 
 // main body ----------------------------
 void main(){
-
+	
 	menu();
 
 
@@ -91,7 +97,7 @@ void menu(void){
 
 // ADMIN validity------------------------
 void ADMIN(void){
-	char user[5] , password[10] ;
+	char user[6] , password[11] ;
 	
 
 	while(attempt < 3){
@@ -100,8 +106,10 @@ void ADMIN(void){
 		printf("Enter Password : \n");
 		scanf("%s" , password);
 
-		if(strcmp(admin_user , user) == 0 && strcmp(admin_password , password) == 0){
-			Admin_page();	
+		if(strcmp(admin_user , user) == 0 && strcmp(admin_password , password) == 0 ){
+			
+			Admin_page();
+			break;
 		}
 		else{
 			system("clear");
@@ -114,7 +122,6 @@ void ADMIN(void){
 		system("clear");
 		printf("Login Failed , Attempt Another Time!!!!\n");
 		
-
 		timer(time(NULL));
 		attempt = 0 ;
 		menu();
@@ -124,19 +131,25 @@ void ADMIN(void){
 
 
 
-void Admin_page(void){}
+void Admin_page(void){
+	 
+	int page ;
 
-
-void timer(long long int failed_time){
+	system("clear");
+	printf("TEST");
 	
-	long long int new_time ;
-	do{
-		new_time = time(NULL);
-	}while(new_time - failed_time != 10);
+	scanf("%d" , &page);
 }
 
 
+void timer(long long int failed_time){
 
+	long long int new_time ;
+	do{
+		new_time = time(NULL);
+	}while(new_time - failed_time != 300);
+
+}
 
 
 
