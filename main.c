@@ -13,6 +13,7 @@ void ADMIN(void);
 void Admin_page(void);
 void timer(long long int failed_time);
 void Add_Staff(void);
+int  Staff_list(void);
 //---------------------------------------
 
 
@@ -39,11 +40,8 @@ char admin_user[] = "ADMIN" , admin_password[] = "1234567890" , attempt = 0;
 
 
 
-
-
 // main body ----------------------------
 void main(){
-	
 	menu();
 
 
@@ -98,7 +96,7 @@ void menu(void){
 
 
 
-// ADMIN validity------------------------
+// ADMIN -------------------------------------------------------------
 void ADMIN(void){
 	char user[6] , password[11] ;
 	
@@ -110,7 +108,7 @@ void ADMIN(void){
 		scanf("%s" , password);
 
 		if(strcmp(admin_user , user) == 0 && strcmp(admin_password , password) == 0 ){
-			
+			attempt = 0 ;
 			Admin_page();
 			break;
 		}
@@ -124,15 +122,16 @@ void ADMIN(void){
 	if( attempt >= 3){
 		system("clear");
 		printf("Login Failed , Attempt Another Time!!!!\n");
-		
+
+	
+	
+
 		timer(time(NULL));
 		attempt = 0 ;
+
 		menu();
 	}
 }
-//---------------------------------------
-
-
 
 void Admin_page(void){
 	
@@ -157,8 +156,8 @@ void Admin_page(void){
 			Admin_page();
 
 		case 2:
-			//staff_list - PASS
-			break;
+			Staff_list();
+			Admin_page();
 
 		case 3:
 			// delet_staf - PASS
@@ -209,6 +208,7 @@ void Add_Staff(void){
 	staff_data = fopen("SATFF_DATA.txt" , "a");
 
 	fflush(staff_data);
+	fprintf(staff_data , "%-5s" , "ACT");
 	fprintf(staff_data , "%-20s" , name);
 	fprintf(staff_data , "%-20s" , lname);
 
@@ -218,6 +218,7 @@ void Add_Staff(void){
 	
 	fprintf(staff_data , "%-15s" , tel );
 	fprintf(staff_data , "%-50s" , email);
+	fprintf(staff_data , "\n");
 
 	// ???? 
 	//fprintf(staff_data , "%s" , user_name);
@@ -226,22 +227,36 @@ void Add_Staff(void){
 	fclose(staff_data);
 
 	user_pass = fopen("USER_PASS.txt" , "a");
-	fprintf(user_pass , "%-20s%-20s\n" , user_name , password);
+	fprintf(user_pass , "%-5s%-20s%-20s\n" , "ACT" , user_name , password);
 	fclose(user_pass);
 
 }
 
+int Staff_list(void){
+	
+
+	system("clear");
+	char input , track = 0;
+	FILE *staff_data ;
+	staff_data = fopen("SATFF_DATA.txt" , "r");
+	
+	if(staff_data == NULL){
+		printf("UNABLE TO LOACATE THE FILE!!!");
+		return 0;
+	}
+
+	//// list _ staff
+
+	fclose(staff_data);
+	return 1;
+}
+
+
+//----------------------------------------------------------------------------------
 
 
 
-
-
-
-
-
-
-
-
+// STAFF----------------------------------------------------------------------------
 
 
 
@@ -250,11 +265,9 @@ void timer(long long int failed_time){
 	long long int new_time ;
 	do{
 		new_time = time(NULL);
-	}while(new_time - failed_time != 300);
+	}while(new_time - failed_time != 10);
 
 }
-
-
 
 
 
