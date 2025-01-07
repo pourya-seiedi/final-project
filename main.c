@@ -123,9 +123,6 @@ void ADMIN(void){
 		system("clear");
 		printf("Login Failed , Attempt Another Time!!!!\n");
 
-	
-	
-
 		timer(time(NULL));
 		attempt = 0 ;
 
@@ -266,7 +263,6 @@ void timer(long long int failed_time){
 	do{
 		new_time = time(NULL);
 	}while(new_time - failed_time != 10);
-
 }
 
 
