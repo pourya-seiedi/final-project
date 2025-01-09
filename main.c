@@ -3,10 +3,6 @@
 #include <string.h>
 #include <time.h>
 
-
-
-
-
 // function prototype -------------------
 void menu(void);
 void ADMIN(void);
