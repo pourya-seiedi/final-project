@@ -19,6 +19,7 @@ void delete_staff(void);
 void Staff_page(void);
 void add_customer(void);
 void customer_list(void);
+void add_book(void);
 //---------------------------------------
 
 
@@ -80,6 +81,7 @@ void menu(void){
 		
 		case 2 :
 			system("clear");
+			// final form --> staff page will be called in staff_check for username usage
 			//staff_check();
 			Staff_page();
 		
@@ -327,6 +329,9 @@ void Staff_page(void){
 		
 		case 4 :
 		case 5 :
+			add_book();
+			Staff_page();
+			
 		case 6 :
 		case 7 :
 
@@ -428,6 +433,66 @@ void customer_list(void){
 	fclose(customer_data);
 
 }
+
+void add_book(void){
+
+	// status 3 mode --> GGG - YYY - RRR
+	// GGG FREE
+	// YYY NOT AVILABLE
+	// RRR PASSED LIMIT TIME
+	char status[3];
+	char name[20] , publisher[20] , writer[20] ;
+	char publish_date[10] ;
+
+	printf("Name : ");
+	scanf("%s" , name);
+
+
+	printf("Publisher : ");
+	scanf("%s" , publisher);
+
+
+	printf("Writer : ");
+	scanf("%s" , writer);
+
+
+	printf("Publish Date : ");
+	scanf("%s" , publish_date);
+	
+	
+	FILE *book_data ;
+
+	book_data = fopen("BOOK_DATA.txt" , "a");
+
+	fflush(book_data);
+	fprintf(book_data , "%-5s" , "GGG");
+	fprintf(book_data , "%-20s" , name);
+	fprintf(book_data , "%-20s" , publisher);
+	fprintf(book_data , "%-10s" , writer);
+	fprintf(book_data , "%-10s" , publish_date );
+	
+
+
+		
+	fprintf(book_data , "%-10s" , "-----");
+
+	// book number
+	fprintf(book_data , "%-10ld" , time(NULL));
+
+	// staff user name
+	//fprintf(book_data , "%-10s" , ------ );
+
+
+	fprintf(book_data , "\n");
+	
+	fclose(book_data);
+	system("clear");
+
+}
+
+
+
+
 
 //----------------------------------------------------------------------------------
 void timer(long long int failed_time){
