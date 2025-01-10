@@ -3,18 +3,13 @@
 #include <string.h>
 #include <time.h>
 
-
-
-
-
 // function prototype -------------------
 void menu(void);
-int ADMIN(void);
+void ADMIN(void);
 void Admin_page(void);
 void timer(long long int failed_time);
 void Add_Staff(void);
-void Staff_list(void);
-void delete_staff(void);
+int  Staff_list(void);
 //---------------------------------------
 
 
@@ -28,7 +23,7 @@ void delete_staff(void);
 
 
 // admin
-char admin_user[] = "1" , admin_password[] = "1" , attempt = 0;
+char admin_user[] = "ADMIN" , admin_password[] = "1234567890" , attempt = 0;
 
 
 
@@ -94,32 +89,43 @@ void menu(void){
 
 
 // ADMIN -------------------------------------------------------------
-int ADMIN(void){
+void ADMIN(void){
 	char user[6] , password[11] ;
 	
-	printf("Enter User Name : ");
-	scanf("%s" , user);
-	
-	printf("Enter Password : ");
-	scanf("%s" , password);
 
-	if(strcmp(admin_user , user) == 0 && strcmp(admin_password , password) == 0 ){
-		attempt = 0 ;
-		system("clear");
-		Admin_page();
+	while(attempt < 3){
+		printf("Enter User Name : \n");
+		scanf("%s" , user);
+		printf("Enter Password : \n");
+		scanf("%s" , password);
+
+		if(strcmp(admin_user , user) == 0 && strcmp(admin_password , password) == 0 ){
+			attempt = 0 ;
+			Admin_page();
+		}	
+		else{
+			system("clear");
+			printf("Try Again!!!\n\n");
+			attempt++;
+			ADMIN();
+		}
 	}
-	else{
+	if( attempt >= 3){
 		system("clear");
+		printf("Login Failed , Attempt Another Time!!!!\n");
+
+		timer(time(NULL));
+		attempt = 0 ;
+
 		menu();
 	}
-	
 }
 
 void Admin_page(void){
 	
 	int  page ; 
 
-
+	system("clear");
 	
 	printf("ADMIN MENU : \n\n");
 	printf("1 - Add Staff\n");
@@ -142,8 +148,8 @@ void Admin_page(void){
 			Admin_page();
 
 		case 3:
-			delete_staff();
-			Admin_page();
+			// delet_staf - PASS
+			break;
 		case 4:
 			// logs - PASS
 			break;
@@ -189,9 +195,8 @@ void Add_Staff(void){
 	
 	printf("Password : ");
 	scanf("%s" , password);
-	
-	FILE *staff_data , *user_pass ;
 
+	FILE *staff_data , *user_pass ;
 	staff_data = fopen("STAFF_DATA.txt" , "a");
 
 	fflush(staff_data);
@@ -205,125 +210,43 @@ void Add_Staff(void){
 	//---------
 	
 	fprintf(staff_data , "%-15s" , tel );
-	fprintf(staff_data , "%-25s" , email);
+	fprintf(staff_data , "%-50s" , email);
 	fprintf(staff_data , "\n");
 
+	// ???? 
+	//fprintf(staff_data , "%s" , user_name);
+	//fprintf(staff_data , "%s" , password);
 
 	fclose(staff_data);
 
-
 	user_pass = fopen("USER_PASS.txt" , "a");
-	
 	fprintf(user_pass , "%-5s%-20s%-20s\n" , "ACT" , user_name , password);
-	
 	fclose(user_pass);
-	system("clear");
+
 }
 
-void Staff_list(void){
+int Staff_list(void){
 	
 
 	system("clear");
-	char input , i = 0;
-	
+	char input , track = 0;
 	FILE *staff_data ;
 	staff_data = fopen("STAFF_DATA.txt" , "r");
-
-	rewind(staff_data);
-
 	
 	if(staff_data == NULL){
 		printf("UNABLE TO LOACATE THE FILE!!!");
+		return 0;
 	}
 
-
-	input = fgetc(staff_data);
-	while(input != EOF ){
-		printf("%c" , input);
+	///// staff list
+	do{
 		input = fgetc(staff_data);
-	}
-
+		printf("%c" , input);
+	}while(1 > 0);
 
 	fclose(staff_data);
-	
+	return 1;
 }
-
-
-void delete_staff(void){
-
-	struct cu_data{
-		
-	char status[3] ;
-	char name[20] ;
-	char lname[20] ;
-	char hire_date[10] ;
-	char id[10] ;
-	char tel[12] ;
-	char email[100] ;
-	
-	struct cu_data *node ;
-	
-	};
-
-	struct cu_data *start , *end , *add;
-	start = malloc(sizeof(struct cu_data));
-	end = malloc(sizeof(struct cu_data));
-	add = malloc(sizeof(struct cu_data));
-
-
-	FILE *staff_data ;
-	staff_data = fopen("STAFF_DATA.txt" , "r");
-
-
-	while(1 > 0){
-		
-		fscanf(staff_data , "" , );
-
-
-	}
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //----------------------------------------------------------------------------------

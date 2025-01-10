@@ -3,13 +3,22 @@
 #include <string.h>
 #include <time.h>
 
+
+
+
+
 // function prototype -------------------
 void menu(void);
 void ADMIN(void);
 void Admin_page(void);
 void timer(long long int failed_time);
 void Add_Staff(void);
-int  Staff_list(void);
+void Staff_list(void);
+void delete_staff(void);
+//void staff_check(void);
+void Staff_page(void);
+void add_customer(void);
+void customer_list(void);
 //---------------------------------------
 
 
@@ -23,7 +32,7 @@ int  Staff_list(void);
 
 
 // admin
-char admin_user[] = "ADMIN" , admin_password[] = "1234567890" , attempt = 0;
+char admin_user[] = "1" , admin_password[] = "1" , attempt = 0;
 
 
 
@@ -67,9 +76,12 @@ void menu(void){
 		case 1 :
 			system("clear");
 			ADMIN();
+			Admin_page();
 		
 		case 2 :
 			system("clear");
+			//staff_check();
+			Staff_page();
 		
 		case 3 :
 			system("clear");
@@ -92,40 +104,28 @@ void menu(void){
 void ADMIN(void){
 	char user[6] , password[11] ;
 	
+	printf("Enter User Name : ");
+	scanf("%s" , user);
+	
+	printf("Enter Password : ");
+	scanf("%s" , password);
 
-	while(attempt < 3){
-		printf("Enter User Name : \n");
-		scanf("%s" , user);
-		printf("Enter Password : \n");
-		scanf("%s" , password);
-
-		if(strcmp(admin_user , user) == 0 && strcmp(admin_password , password) == 0 ){
-			attempt = 0 ;
-			Admin_page();
-		}	
-		else{
-			system("clear");
-			printf("Try Again!!!\n\n");
-			attempt++;
-			ADMIN();
-		}
-	}
-	if( attempt >= 3){
-		system("clear");
-		printf("Login Failed , Attempt Another Time!!!!\n");
-
-		timer(time(NULL));
+	if(strcmp(admin_user , user) == 0 && strcmp(admin_password , password) == 0 ){
 		attempt = 0 ;
-
+		system("clear");
+	}
+	else{
+		system("clear");
 		menu();
 	}
+	
 }
 
 void Admin_page(void){
 	
 	int  page ; 
 
-	system("clear");
+
 	
 	printf("ADMIN MENU : \n\n");
 	printf("1 - Add Staff\n");
@@ -148,8 +148,8 @@ void Admin_page(void){
 			Admin_page();
 
 		case 3:
-			// delet_staf - PASS
-			break;
+			delete_staff();
+			Admin_page();
 		case 4:
 			// logs - PASS
 			break;
@@ -195,8 +195,9 @@ void Add_Staff(void){
 	
 	printf("Password : ");
 	scanf("%s" , password);
-
+	
 	FILE *staff_data , *user_pass ;
+
 	staff_data = fopen("STAFF_DATA.txt" , "a");
 
 	fflush(staff_data);
@@ -210,43 +211,82 @@ void Add_Staff(void){
 	//---------
 	
 	fprintf(staff_data , "%-15s" , tel );
-	fprintf(staff_data , "%-50s" , email);
+	fprintf(staff_data , "%-25s" , email);
 	fprintf(staff_data , "\n");
 
-	// ???? 
-	//fprintf(staff_data , "%s" , user_name);
-	//fprintf(staff_data , "%s" , password);
 
 	fclose(staff_data);
 
-	user_pass = fopen("USER_PASS.txt" , "a");
-	fprintf(user_pass , "%-5s%-20s%-20s\n" , "ACT" , user_name , password);
-	fclose(user_pass);
 
+	user_pass = fopen("USER_PASS.txt" , "a");
+	
+	fprintf(user_pass , "%-5s%-20s%-20s\n" , "ACT" , user_name , password);
+	
+	fclose(user_pass);
+	system("clear");
 }
 
-int Staff_list(void){
+void Staff_list(void){
 	
 
 	system("clear");
-	char input , track = 0;
+	char input , i = 0;
+	
 	FILE *staff_data ;
 	staff_data = fopen("STAFF_DATA.txt" , "r");
+
+	rewind(staff_data);
+
 	
 	if(staff_data == NULL){
 		printf("UNABLE TO LOACATE THE FILE!!!");
-		return 0;
 	}
 
-	///// staff list
-	do{
-		input = fgetc(staff_data);
+
+	input = fgetc(staff_data);
+	while(input != EOF ){
 		printf("%c" , input);
-	}while(1 > 0);
+		input = fgetc(staff_data);
+	}
+
 
 	fclose(staff_data);
-	return 1;
+	
 }
+
+
+void delete_staff(void){
+
+	struct cu_data{
+		
+	char status[3] ;
+	char name[20] ;
+	char lname[20] ;
+	char hire_date[10] ;
+	char id[10] ;
+	char tel[12] ;
+	char email[100] ;
+	
+	struct cu_data *node ;
+	
+	};
+
+	struct cu_data *start , *end , *add;
+	start = malloc(sizeof(struct cu_data));
+	end = malloc(sizeof(struct cu_data));
+	add = malloc(sizeof(struct cu_data));
+
+
+	FILE *staff_data ;
+	staff_data = fopen("STAFF_DATA.txt" , "r");
+
+
+	while(1 > 0){
+		
+		//fscanf(staff_data , "" , );
+	}
+}
+
 
 
 //----------------------------------------------------------------------------------
@@ -255,8 +295,141 @@ int Staff_list(void){
 
 // STAFF----------------------------------------------------------------------------
 
+//void staff_check(void){}
+void Staff_page(void){
+	
+	int  page ; 
+	
+	printf("STAFF MENU : \n\n");
+	printf("1 - Add Customer\n");
+	printf("2 - Subscription Extend\n");
+	printf("3 - Customer List\n");
+	printf("4 - Delete Customer\n");
+	printf("5 - Add Book\n");
+	printf("6 - Logs\n");
+	printf("7 - Settings\n");
+	printf("8 - RETURN\n\n");
+
+	printf("Enter Your Choice : \n");
+	scanf("%d" , &page);
 
 
+	switch(page){
+		case 1 :
+			add_customer();
+			Staff_page();
+
+		case 2 :
+
+		case 3 :
+			customer_list();
+			Staff_page();
+		
+		case 4 :
+		case 5 :
+		case 6 :
+		case 7 :
+
+		case 8 :
+			system("clear");
+			menu();
+
+		default :
+			printf("Please enter Number 1 to 8!!!");
+			exit(0);
+	}
+}
+
+
+void add_customer(void){
+
+	char name[20] , lname[20] , sub_date[10] , id[10];
+	char tel[12] , email[100] , user_name[20] ;
+	char password[20] ;
+
+	printf("Name : ");
+	scanf("%s" , name);
+
+
+	printf("Last Name : ");
+	scanf("%s" , lname);
+
+
+	printf("ID : ");
+	scanf("%s" , id);
+
+
+	printf("Telephon Number : ");
+	scanf("%s" , tel);
+	
+	printf("Email : ");
+	scanf("%s" , email);
+	
+	printf("User Name : ");
+	scanf("%s" , user_name);
+	
+	printf("Password : ");
+	scanf("%s" , password);
+	
+	FILE *customer_data , *user_pass ;
+
+	customer_data = fopen("CUSTOMER_DATA.txt" , "a");
+
+	fflush(customer_data);
+	fprintf(customer_data , "%-5s" , "ACT");
+	fprintf(customer_data , "%-20s" , name);
+	fprintf(customer_data , "%-20s" , lname);
+	fprintf(customer_data , "%-10s" , id);
+
+	// hire date - PASS
+	fprintf(customer_data , "%-10s" , "----" );
+	//---------
+	
+	fprintf(customer_data , "%-15s" , tel );
+	fprintf(customer_data , "%-25s" , email);
+	fprintf(customer_data , "\n");
+
+
+	fclose(customer_data);
+
+
+	user_pass = fopen("USER_PASS.txt" , "a");
+	
+	fprintf(user_pass , "%-5s%-20s%-20s\n" , "ACT" , user_name , password);
+	
+	fclose(user_pass);
+	system("clear");
+}
+
+
+void customer_list(void){
+	
+	system("clear");
+	char input , i = 0;
+	
+	FILE *customer_data ;
+	customer_data = fopen("CUSTOMER_DATA.txt" , "r");
+
+	rewind(customer_data);
+
+	
+	if(customer_data == NULL){
+		printf("UNABLE TO LOACATE THE FILE!!!");
+	}
+
+
+	input = fgetc(customer_data);
+	while(input != EOF ){
+		printf("%c" , input);
+		input = fgetc(customer_data);
+	}
+
+
+	fclose(customer_data);
+
+}
+
+//----------------------------------------------------------------------------------
 void timer(long long int failed_time){
 
 	long long int new_time ;
