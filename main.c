@@ -20,6 +20,7 @@ void Staff_page(void);
 void add_customer(void);
 void customer_list(void);
 void add_book(void);
+void delete_customer(void);
 //---------------------------------------
 
 
@@ -373,6 +374,9 @@ void Staff_page(void){
 			Staff_page();
 		
 		case 4 :
+			delete_customer();
+			Staff_page();
+
 		case 5 :
 			add_book();
 			Staff_page();
@@ -534,6 +538,89 @@ void add_book(void){
 	system("clear");
 
 }
+
+
+void delete_customer(void){
+
+	char cu_id[12] ; 
+	printf("ID : \n");
+	scanf("%s" , cu_id);
+
+	struct cu_data{
+		
+		char status[4] ;
+		char name[21] ;
+		char lname[21] ;
+		char hire_date[11] ;
+		char id[12] ;
+		char tel[13] ;
+		char email[101] ;
+		struct cu_data *node ;
+	
+	};
+
+	struct cu_data  *q , *d;
+	q = malloc(sizeof(struct cu_data));
+
+	struct cu_data *s , *t ;
+	s =  q ;
+	t = s ;
+
+	FILE *customer_data ;
+	customer_data = fopen("CUSTOMER_DATA.txt" , "r");
+	rewind(customer_data);
+	fflush(customer_data);
+
+	while(1 > 0){
+	
+		d = malloc(sizeof(struct cu_data));
+
+		fscanf(customer_data , "%s%s%s%s%s%s%s" , q->status , q->name ,  q->lname , q->id , q->hire_date , q->tel , q->email );
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
+
+		if(feof(customer_data) != 0 ){
+			break;
+		}
+
+	}
+
+	fclose(customer_data);
+
+	customer_data = fopen("CUSTOMER_DATA.txt" , "w");
+	rewind(customer_data);
+	fflush(customer_data);
+
+
+	while(t != NULL){
+			
+		if(strcmp(t->id , cu_id) == 0){
+			strcpy(t->status , "DCT");
+		}
+		
+		if(strcmp(t->status , "ACT") == 0 || strcmp(t->status , "DCT") == 0){
+			fprintf(customer_data , "%-5s" , t->status );
+			fprintf(customer_data , "%-20s" , t->name );
+			fprintf(customer_data , "%-20s" , t->lname );
+			fprintf(customer_data , "%-10s" , t->id );
+			fprintf(customer_data , "%-10s" , t->hire_date );
+			fprintf(customer_data , "%-15s" , t->tel );
+			fprintf(customer_data , "%-25s" , t->email);
+			fprintf(customer_data , "\n");
+		}
+
+		t = t->node ;
+	}
+
+	fclose(customer_data);
+
+	system("clear");
+
+}
+
+
+
 
 
 //----------------------------------------------------------------------------------
