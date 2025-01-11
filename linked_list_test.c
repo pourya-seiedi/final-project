@@ -6,13 +6,13 @@ void main(){
 
 	struct cu_data{
 		
-		char status[3] ;
-		char name[20] ;
-		char lname[20] ;
-		char hire_date[10] ;
-		char id[10] ;
-		char tel[12] ;
-		char email[100] ;
+		char status[4] ;
+		char name[21] ;
+		char lname[21] ;
+		char hire_date[11] ;
+		char id[12] ;
+		char tel[13] ;
+		char email[101] ;
 		struct cu_data *node ;
 	
 	};
@@ -36,14 +36,14 @@ void main(){
 		d = malloc(sizeof(struct cu_data));
 
 		fscanf(staff_data , "%s%s%s%s%s%s%s" , q->status , q->name ,  q->lname , q->hire_date , q->id , q->tel , q->email );
-		
 		q->node = d ;
 		q = d ;
 		d->node = NULL;
 
-		if(feof(staff_data) != 0){
+		if(feof(staff_data) != 0 ){
 			break;
 		}
+
 	}
 
 	fclose(staff_data);
@@ -52,7 +52,6 @@ void main(){
 	while(t != NULL){
 	
 		printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n\n" , t->status , t->name ,  t->lname , t->hire_date , t->id , t->tel , t->email );
-		
 		t = t->node ;
 
 	}
