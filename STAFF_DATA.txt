@@ -1,10 +1,3 @@
-ACT  pourya              seiedi              17        ----      09108747750    pourya1623@gmail.com     
-ACT  sin                 sdf                 2345      ----      fgh            345                      
-ACT  ali                 bagheri             123       ----      dfgh           356                      
-ACT  mohhamad            seiedi              345634    ----      fghfh          34563456                 
-ACT  dfghdfg             456456              ghtyhjty  ----      46746745       tyhtyu                   
-ACT  sadf                sdf                 3245324   ----      fgjfgh         35463456                 
-ACT  sdfsdf              2345234523          dfgdfgdfg ----      342534534      dfgdrg                   
-ACT  ASD                 345634              FGHFGHFG  ----      456745674      GHJGHJ                   
-ACT  adf                 356356              fhnfghj   ----      35636          ghghjh                   
-ACT  13214               2453425             fghfgh    ----      456456         ghghj                    
+DCT  pourya              seiedi              12        ----      4564356        fdgdfdfg                 
+ACT  ali                 bagheri             56        ----      567567         fghjfhj                  
+DCT  sina                khademi             67        ----      467567567      fghfghfg                 

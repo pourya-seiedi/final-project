@@ -170,8 +170,8 @@ void Admin_page(void){
 void Add_Staff(void){
 	
 	
-	char name[20] , lname[20] , hire_date[10] , id[10];
-	char tel[12] , email[100] , user_name[20] ;
+	char name[21] , lname[21] , hire_date[11] , id[11];
+	char tel[13] , email[101] , user_name[21] ;
 	char password[20] ;
 
 	printf("Name : ");
@@ -251,7 +251,6 @@ void Staff_list(void){
 		input = fgetc(staff_data);
 	}
 
-
 	fclose(staff_data);
 	
 }
@@ -259,34 +258,80 @@ void Staff_list(void){
 
 void delete_staff(void){
 
+	char staff_id[12] ; 
+	printf("ID : \n");
+	scanf("%s" , staff_id);
+
 	struct cu_data{
 		
-	char status[3] ;
-	char name[20] ;
-	char lname[20] ;
-	char hire_date[10] ;
-	char id[10] ;
-	char tel[12] ;
-	char email[100] ;
-	
-	struct cu_data *node ;
+		char status[4] ;
+		char name[21] ;
+		char lname[21] ;
+		char hire_date[11] ;
+		char id[12] ;
+		char tel[13] ;
+		char email[101] ;
+		struct cu_data *node ;
 	
 	};
 
-	struct cu_data *start , *end , *add;
-	start = malloc(sizeof(struct cu_data));
-	end = malloc(sizeof(struct cu_data));
-	add = malloc(sizeof(struct cu_data));
+	struct cu_data  *q , *d;
+	q = malloc(sizeof(struct cu_data));
 
+	struct cu_data *s , *t ;
+	s =  q ;
+	t = s ;
 
 	FILE *staff_data ;
 	staff_data = fopen("STAFF_DATA.txt" , "r");
-
+	rewind(staff_data);
+	fflush(staff_data);
 
 	while(1 > 0){
-		
-		//fscanf(staff_data , "" , );
+	
+		d = malloc(sizeof(struct cu_data));
+
+		fscanf(staff_data , "%s%s%s%s%s%s%s" , q->status , q->name ,  q->lname , q->id , q->hire_date , q->tel , q->email );
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
+
+		if(feof(staff_data) != 0 ){
+			break;
+		}
+
 	}
+
+	fclose(staff_data);
+
+	staff_data = fopen("STAFF_DATA.txt" , "w");
+	rewind(staff_data);
+	fflush(staff_data);
+
+
+	while(t != NULL){
+			
+		if(strcmp(t->id , staff_id) == 0){
+			strcpy(t->status , "DCT");
+		}
+		
+		if(strcmp(t->status , "ACT") == 0 || strcmp(t->status , "DCT") == 0){
+			fprintf(staff_data , "%-5s" , t->status );
+			fprintf(staff_data , "%-20s" , t->name );
+			fprintf(staff_data , "%-20s" , t->lname );
+			fprintf(staff_data , "%-10s" , t->id );
+			fprintf(staff_data , "%-10s" , t->hire_date );
+			fprintf(staff_data , "%-15s" , t->tel );
+			fprintf(staff_data , "%-25s" , t->email);
+			fprintf(staff_data , "\n");
+		}
+
+		t = t->node ;
+	}
+
+	fclose(staff_data);
+
+	system("clear");
 }
 
 
@@ -348,9 +393,9 @@ void Staff_page(void){
 
 void add_customer(void){
 
-	char name[20] , lname[20] , sub_date[10] , id[10];
-	char tel[12] , email[100] , user_name[20] ;
-	char password[20] ;
+	char name[21] , lname[21] , sub_date[11] , id[11];
+	char tel[13] , email[101] , user_name[21] ;
+	char password[21] ;
 
 	printf("Name : ");
 	scanf("%s" , name);
@@ -440,9 +485,9 @@ void add_book(void){
 	// GGG FREE
 	// YYY NOT AVILABLE
 	// RRR PASSED LIMIT TIME
-	char status[3];
-	char name[20] , publisher[20] , writer[20] ;
-	char publish_date[10] ;
+	char status[4];
+	char name[21] , publisher[21] , writer[21] ;
+	char publish_date[11] ;
 
 	printf("Name : ");
 	scanf("%s" , name);
