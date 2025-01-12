@@ -573,15 +573,16 @@ void delete_customer(void){
 	while(1 > 0){
 	
 		d = malloc(sizeof(struct cu_data));
+		
+		if(feof(customer_data) != 0 ){
+			break;
+		}
 
 		fscanf(customer_data , "%s%s%s%s%s%s%s" , q->status , q->name ,  q->lname , q->id , q->hire_date , q->tel , q->email );
 		q->node = d ;
 		q = d ;
 		d->node = NULL;
-
-		if(feof(customer_data) != 0 ){
-			break;
-		}
+		
 
 	}
 
