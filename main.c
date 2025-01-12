@@ -82,8 +82,8 @@ void menu(void){
 		case 2 :
 			system("clear");
 			// final form --> staff page will be called in staff_check for username usage
-			//staff_check();
-			Staff_page();
+			staff_check();
+			//Staff_page();
 		
 		case 3 :
 			system("clear");
@@ -345,50 +345,63 @@ void delete_staff(void){
 void staff_check(void){
 
 
+	struct users{
+		char status[4] ;
+		char user_name[21] ;
+		char password[21] ; 
+		struct users *node ;
+	};
 
 
+	char user[21] , pass[21];
 
+	printf("Enter User Name : \n");
+	scanf("%s" , user);
 
+	printf("Enter Password : \n");
+	scanf("%s" , pass);
 
+	struct users  *q , *d;
+	q = malloc(sizeof(struct users));
 
+	struct users *s , *t ;
+	s =  q ;
+	t = s ;
 
+	FILE *staff_pass ;
+	staff_pass = fopen("STAFF_PASS.txt" , "r");
+	rewind(staff_pass);
+	fflush(staff_pass);
 
+	while(1 > 0){
+	
+		d = malloc(sizeof(struct users));
+		
+		if(feof(staff_pass) != 0 ){
+			break;
+		}
 
+		fscanf(staff_pass , "%s%s%s" , q->status , q->user_name , q->password);
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
 
+	}
 
+	fclose(staff_pass);
 
+	
+	while(t != NULL){
+			
+	
+		
+		if(strcmp(t->status , "ACT") == 0 && strcmp(t->user_name , user) == 0 && strcmp(t->password , pass) == 0){
+			Staff_page();
+		}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		t = t->node ;
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 void Staff_page(void){
