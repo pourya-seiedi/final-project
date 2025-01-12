@@ -462,11 +462,14 @@ void staff_check(void){
 	while(t != NULL){
 	
 		if(strcmp(t->status , "ACT") == 0 && strcmp(t->user_name , user) == 0 && strcmp(t->password , pass) == 0){
+			system("clear");
 			Staff_page();
 		}
 
 		t = t->node ;
 	}
+
+	system("clear");
 }
 
 
