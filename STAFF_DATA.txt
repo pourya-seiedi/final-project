@@ -1,6 +1,8 @@
 DCT  pourya              seiedi              12        ----      4564356        fdgdfdfg                 
 ACT  ali                 bagheri             56        ----      567567         fghjfhj                  
 DCT  sina                khademi             67        ----      467567567      fghfghfg                 
-ACT  pourya              seiedi              34        ----      98345763       lksudf                   
+DCT  pourya              seiedi              34        ----      98345763       lksudf                   
 ACT  ali                 bagheri             45        ----      34587          lkjsdflk                 
-ACT  jalal               ja                  34        ----      9786978        lidsfg                   
+DCT  jalal               ja                  34        ----      9786978        lidsfg                   
+DCT  asd                 asd                 34        ----      3456456        sdkfjs                   
+DCT  sdf                 ert                 70        ----      34563456       fghfghfgh                

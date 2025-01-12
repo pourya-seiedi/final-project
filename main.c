@@ -258,9 +258,13 @@ void Staff_list(void){
 
 void delete_staff(void){
 
-	char staff_id[12] ; 
+	char staff_id[12] , user[21]; 
+	
 	printf("ID : \n");
 	scanf("%s" , staff_id);
+
+	printf("User Name : \n");
+	scanf("%s" , user);
 
 	struct cu_data{
 		
@@ -331,6 +335,70 @@ void delete_staff(void){
 
 	fclose(staff_data);
 
+
+	struct users{
+		char status[4] ;
+		char username[21] ;
+		char password[21] ;
+		struct users *node ; 
+	};
+
+
+	struct users  *l , *g;
+	l = malloc(sizeof(struct users));
+
+	struct users *f , *k ;
+	f = l ;
+	k = f ;
+
+	FILE *staff_pass ;
+	staff_pass = fopen("STAFF_PASS.txt" , "r");
+	rewind(staff_pass);
+	fflush(staff_pass);
+
+	while(1 > 0){
+	
+		g = malloc(sizeof(struct users));
+
+		if(feof(staff_data) != 0 ){
+			break;
+		}
+
+		fscanf(staff_data , "%s%s%s" , l->status , l->username , l->password );
+		
+		l->node = g ;
+		l = g ;
+		g->node = NULL;
+	
+	}
+
+	fclose(staff_pass);
+
+	staff_pass = fopen("STAFF_PASS.txt" , "w");
+	rewind(staff_pass);
+	fflush(staff_pass);
+
+
+	while(k != NULL){
+			
+		if(strcmp(k->username , user) == 0){
+			strcpy(k->status , "DCT");
+		}
+		
+		if(strcmp(k->status , "ACT") == 0 || strcmp(k->status , "DCT") == 0){
+			fprintf(staff_pass , "%-5s" , k->status );
+			fprintf(staff_pass , "%-20s" , k->username );
+			fprintf(staff_pass , "%-20s" , k->password );
+			fprintf(staff_pass , "\n");
+		}
+
+		k = k->node ;
+	}
+
+	fclose(staff_pass);
+
+
+
 	system("clear");
 }
 
@@ -392,9 +460,7 @@ void staff_check(void){
 
 	
 	while(t != NULL){
-			
 	
-		
 		if(strcmp(t->status , "ACT") == 0 && strcmp(t->user_name , user) == 0 && strcmp(t->password , pass) == 0){
 			Staff_page();
 		}
