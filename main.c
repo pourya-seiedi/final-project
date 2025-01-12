@@ -14,7 +14,7 @@ void timer(long long int failed_time);
 void Add_Staff(void);
 void Staff_list(void);
 void delete_staff(void);
-//void staff_check(void);
+void staff_check(void);
 void Staff_page(void);
 void add_customer(void);
 void customer_list(void);
@@ -220,7 +220,7 @@ void Add_Staff(void){
 	fclose(staff_data);
 
 
-	user_pass = fopen("USER_PASS.txt" , "a");
+	user_pass = fopen("STAFF_PASS.txt" , "a");
 	
 	fprintf(user_pass , "%-5s%-20s%-20s\n" , "ACT" , user_name , password);
 	
@@ -342,7 +342,55 @@ void delete_staff(void){
 
 // STAFF----------------------------------------------------------------------------
 
-//void staff_check(void){}
+void staff_check(void){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void Staff_page(void){
 	
 	int  page ; 
@@ -446,7 +494,7 @@ void add_customer(void){
 	fclose(customer_data);
 
 
-	user_pass = fopen("USER_PASS.txt" , "a");
+	user_pass = fopen("CUSTOMER_PASS.txt" , "a");
 	
 	fprintf(user_pass , "%-5s%-20s%-20s\n" , "ACT" , user_name , password);
 	
