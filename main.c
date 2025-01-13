@@ -20,6 +20,7 @@ void add_customer(void);
 void customer_list(void);
 void add_book(void);
 void delete_customer(void);
+void admin_logs(void);
 //---------------------------------------
 
 
@@ -401,6 +402,93 @@ void delete_staff(void){
 
 	system("clear");
 }
+
+
+
+void admin_logs(){
+
+	system("clear");
+
+
+
+	printf("Logs Page\n\n");
+	printf("1 - Customer List\n");
+	printf("2 - Staff List\n");
+	printf("3 - Fired Staff List\n");
+	printf("4 - Book List\n");
+	printf("5 - Available Book List\n");
+	printf("6 - Non-Available Book List\n");
+	printf("7 - Time-Pass Book List\n");
+	printf("8 - Non-Available Book History\n");
+	printf("9 - Buy List History\n");
+	printf("10 - Staff Abdd Book History\n");
+	printf("11 - Entery Logs\n");
+	printf("12 - RETURN\");
+
+	int page ;
+	printf("Enter Your Choice : \n");
+	scanf("%d" , &page);
+
+
+
+
+	switch(page){
+		case 1:
+
+		
+
+		case 2:
+
+
+		case 3:
+
+
+		case 4:
+		
+
+		case 5:
+		
+
+		case 6:
+		
+
+		case 7:
+		
+
+		case 8:
+		
+
+		case 9:
+		
+
+		case 10:
+		
+
+		case 11:
+		
+
+		case 12:
+			
+		
+
+		default :
+			printf("enter a number between 1 to 12!!!");
+			exit(0);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
