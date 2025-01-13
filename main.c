@@ -22,6 +22,7 @@ void add_book(void);
 void delete_customer(void);
 void admin_logs(void);
 void fired_staff_list(void);
+void book_list();
 //---------------------------------------
 
 
@@ -442,7 +443,8 @@ void admin_logs(){
 			admin_logs();
 
 		case 4:
-		
+			book_list();
+			admin_logs();
 
 		case 5:
 		
@@ -543,6 +545,36 @@ void fired_staff_list(void){
 
 }
 
+
+
+
+
+void book_list(){
+
+	system("clear");
+	char input , i = 0;
+	
+	FILE *book ;
+	book = fopen("BOOK_DATA.txt" , "r");
+
+	rewind(book);
+
+	
+	if(book == NULL){
+		printf("UNABLE TO LOACATE THE FILE!!!");
+	}
+
+
+	input = fgetc(book);
+	while(input != EOF ){
+		printf("%c" , input);
+		input = fgetc(book);
+	}
+
+	fclose(book);
+	
+
+}
 
 
 
