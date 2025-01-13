@@ -24,6 +24,7 @@ void admin_logs(void);
 void fired_staff_list(void);
 void book_list(void);
 void ava_book_list(void);
+void nva_book_list(void);
 //---------------------------------------
 
 
@@ -452,7 +453,9 @@ void admin_logs(){
 			admin_logs();
 
 		case 6:
-		
+			
+			nva_book_list();
+			admin_logs();
 
 		case 7:
 		
@@ -650,6 +653,74 @@ void ava_book_list(void){
 
 
 
+void nva_book_list(void){
+
+
+	struct cu_data{
+		
+		char status[4] ;
+		char name[21] ;
+		char publisher[21] ;
+		char writer[21] ;
+		char publish_date[11] ;
+		char date[12] ;
+		char bnumber[12] ;
+		
+		// add book should be fixed
+		//char user[21] ;
+		struct cu_data *node ;
+	
+	};
+
+	struct cu_data  *q , *d;
+	q = malloc(sizeof(struct cu_data));
+
+	struct cu_data *s , *t ;
+	s =  q ;
+	t = s ;
+
+	FILE *book ;
+	book = fopen("BOOK_DATA.txt" , "r");
+	rewind(book);
+	fflush(book);
+
+	while(1 > 0){
+	
+		d = malloc(sizeof(struct cu_data));
+
+		fscanf(book , "%s%s%s%s%s%s%s" , q->status , q->name ,  q->publisher , q->writer , q->publish_date , q->date , q->bnumber );
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
+
+		if(feof(book) != 0 ){
+			break;
+		}
+
+	}
+
+	fclose(book);
+	
+	
+	while(t != NULL){
+
+		if(strcmp(t->status , "YYY") == 0){
+			
+			printf("%-5s" , t->status );
+			printf("%-20s" , t->name );
+			printf("%-20s" , t->publisher );
+			printf("%-10s" , t->writer );
+			printf("%-10s" , t->publish_date );
+			printf("%-15s" , t->date );
+			printf("%-25s" , t->bnumber);
+			printf("\n");
+
+		}
+		t = t->node;
+
+	}
+
+}
 
 
 
