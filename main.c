@@ -21,6 +21,7 @@ void customer_list(void);
 void add_book(void);
 void delete_customer(void);
 void admin_logs(void);
+void fired_staff_list(void);
 //---------------------------------------
 
 
@@ -154,8 +155,8 @@ void Admin_page(void){
 			delete_staff();
 			Admin_page();
 		case 4:
-			// logs - PASS
-			break;
+			admin_logs();
+			Admin_page();
 
 		case 5:
 			// exit
@@ -407,11 +408,7 @@ void delete_staff(void){
 
 void admin_logs(){
 
-	system("clear");
-
-
-
-	printf("Logs Page\n\n");
+	printf("\n\nLogs Page\n\n");
 	printf("1 - Customer List\n");
 	printf("2 - Staff List\n");
 	printf("3 - Fired Staff List\n");
@@ -423,25 +420,26 @@ void admin_logs(){
 	printf("9 - Buy List History\n");
 	printf("10 - Staff Abdd Book History\n");
 	printf("11 - Entery Logs\n");
-	printf("12 - RETURN\");
+	printf("12 - RETURN\n");
 
 	int page ;
 	printf("Enter Your Choice : \n");
 	scanf("%d" , &page);
-
-
-
+	
+	system("clear");
 
 	switch(page){
 		case 1:
-
-		
+			customer_list();
+			admin_logs();
 
 		case 2:
-
+			Staff_list();
+			admin_logs();
 
 		case 3:
-
+			fired_staff_list();
+			admin_logs();
 
 		case 4:
 		
@@ -476,6 +474,10 @@ void admin_logs(){
 			exit(0);
 	}
 }
+
+
+void fired_staff_list(void){}
+
 
 
 
