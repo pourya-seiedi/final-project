@@ -466,30 +466,82 @@ void admin_logs(){
 		
 
 		case 12:
-			
+			system("clear");
+			Admin_page();
 		
 
 		default :
 			printf("enter a number between 1 to 12!!!");
 			exit(0);
 	}
+	system("clear");
 }
 
 
-void fired_staff_list(void){}
+void fired_staff_list(void){
 
 
 
+	struct cu_data{
+		
+		char status[4] ;
+		char name[21] ;
+		char lname[21] ;
+		char hire_date[11] ;
+		char id[12] ;
+		char tel[13] ;
+		char email[101] ;
+		struct cu_data *node ;
+	
+	};
 
+	struct cu_data  *q , *d;
+	q = malloc(sizeof(struct cu_data));
 
+	struct cu_data *s , *t ;
+	s =  q ;
+	t = s ;
 
+	FILE *staff_data ;
+	staff_data = fopen("STAFF_DATA.txt" , "r");
+	rewind(staff_data);
+	fflush(staff_data);
 
+	while(1 > 0){
+	
+		d = malloc(sizeof(struct cu_data));
 
+		fscanf(staff_data , "%s%s%s%s%s%s%s" , q->status , q->name ,  q->lname , q->id , q->hire_date , q->tel , q->email );
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
 
+		if(feof(staff_data) != 0 ){
+			break;
+		}
 
+	}
 
+	fclose(staff_data);
+	
+	
+	while(t != NULL){
+		
+		if(strcmp(t->status , "DCT") == 0){
+			printf("%-5s" , t->status );
+			printf("%-20s" , t->name );
+			printf("%-20s" , t->lname );
+			printf("%-10s" , t->id );
+			printf("%-10s" , t->hire_date );
+			printf("%-15s" , t->tel );
+			printf("%-25s" , t->email);
+			printf("\n");
 
+		}
+		t = t->node;
+	}
 
+}
 
 
 
