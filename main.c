@@ -11,6 +11,7 @@ void menu(void);
 void ADMIN(void);
 void Admin_page(void);
 void timer(long long int failed_time);
+void timer_sec(int sec);
 void Add_Staff(void);
 void Staff_list(void);
 void delete_staff(void);
@@ -27,6 +28,10 @@ void ava_book_list(void);
 void nva_book_list(void);
 void active_user(char user[21] , char pass[21]);
 void setting(void);
+void ch_pass(void);
+void ch_email(void);
+void ch_tell(void);
+
 //---------------------------------------
 
 
@@ -1109,6 +1114,8 @@ void setting(void){
 
 	switch(page){
 		case 1: 
+			ch_pass();
+			setting();
 		case 2: 
 		case 3: 
 
@@ -1123,6 +1130,118 @@ void setting(void){
 
 
 }
+
+void ch_pass(void){
+	
+	system("clear");
+
+	char new_pass[21] , pass_check[21];
+	
+	printf("Enter New Password\n");
+	scanf("%s" , new_pass);
+	
+	printf("Enter New Password Again\n");
+	scanf("%s" , pass_check);
+
+
+	char user[21] , pass[21];
+	FILE *user_data ;
+	user_data = fopen("cr_user.txt" , "r");
+	fscanf(user_data , "%s%s" , user , pass);
+	fclose(user_data);
+
+
+	if(strcmp(new_pass , pass) == 0){
+		printf("Please Enter New Password\n");
+		timer_sec(3);
+		setting();
+	}
+
+	if(strcmp(new_pass , pass_check) != 0){
+		printf("Wrong Password Confirmation\n");
+		timer_sec(3);
+		setting();
+	}
+
+
+	struct cu_data{
+		
+		char status[4] ;
+		char user_name[21] ;
+		char password[21] ;
+
+		struct cu_data *node ;
+	
+	};
+
+	struct cu_data  *q , *d;
+	q = malloc(sizeof(struct cu_data));
+
+	struct cu_data *s , *t ;
+	s =  q ;
+	t = s ;
+
+	FILE *staff_pass ;
+	staff_pass = fopen("STAFF_PASS.txt" , "r");
+	rewind(staff_pass);
+	fflush(staff_pass);
+
+	while(1 > 0){
+	
+		d = malloc(sizeof(struct cu_data));
+
+		if(feof(staff_pass) != 0 ){
+			break;
+		}
+
+		fscanf(staff_pass , "%s%s%s" , q->status , q->user_name ,  q->password);
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
+
+	}
+
+	fclose(staff_pass);
+	
+	
+	staff_pass = fopen("STAFF_PASS.txt" , "w");
+	rewind(staff_pass);
+	fflush(staff_pass);
+
+
+	while(t->node != NULL){
+		
+		if(strcmp(user , t->user_name) == 0){
+			strcpy(t->password , new_pass);
+		}	
+
+		fprintf(staff_pass , "%-5s"  , t->status );
+		fprintf(staff_pass , "%-20s" , t->user_name);
+		fprintf(staff_pass , "%-20s" , t->password);
+		fprintf(staff_pass , "\n");
+
+		t = t->node;
+	}
+
+	fclose(staff_pass);
+
+	printf("Operation Done\n");
+
+
+
+	timer_sec(2);
+}
+
+
+
+
+void ch_email(void){}
+void ch_tell(void){}
+
+
+
+
+
 
 
 
@@ -1162,7 +1281,15 @@ void active_user(char user[21] , char pass[21] ){
 	fclose(current);
 }
 
+void timer_sec(int sec){
+	
+	long long int cr_time = time(NULL) , new_time;
 
+	do{
+		new_time = time(NULL);
+	}while(new_time - cr_time != sec);
+
+}
 
 
 

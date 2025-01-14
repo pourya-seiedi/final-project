@@ -1,9 +1,3 @@
-DCT  pourya              seiedi              12        ----      4564356        fdgdfdfg                 
-ACT  ali                 bagheri             56        ----      567567         fghjfhj                  
-DCT  sina                khademi             67        ----      467567567      fghfghfg                 
-DCT  pourya              seiedi              34        ----      98345763       lksudf                   
-ACT  ali                 bagheri             45        ----      34587          lkjsdflk                 
-DCT  jalal               ja                  34        ----      9786978        lidsfg                   
-DCT  asd                 asd                 34        ----      3456456        sdkfjs                   
-DCT  sdf                 ert                 70        ----      34563456       fghfghfgh                
-ACT  test                test                test      ----      test           test                     
+ACT  1                   1                   1         ----      1              1                        
+ACT  2                   2                   2         ----      2              2                        
+ACT  3                   3                   3         ----      3              3                        
