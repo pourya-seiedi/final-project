@@ -25,6 +25,8 @@ void fired_staff_list(void);
 void book_list(void);
 void ava_book_list(void);
 void nva_book_list(void);
+void active_user(char user[21] , char pass[21]);
+void setting(void);
 //---------------------------------------
 
 
@@ -800,6 +802,7 @@ void staff_check(void){
 	
 		if(strcmp(t->status , "ACT") == 0 && strcmp(t->user_name , user) == 0 && strcmp(t->password , pass) == 0){
 			system("clear");
+			active_user(user , pass);
 			Staff_page();
 		}
 
@@ -849,6 +852,8 @@ void Staff_page(void){
 			
 		case 6 :
 		case 7 :
+			setting();
+			Staff_page();
 
 		case 8 :
 			system("clear");
@@ -1086,6 +1091,53 @@ void delete_customer(void){
 
 }
 
+void setting(void){
+
+	int page ; 
+	
+	system("clear");
+	printf("SETTINGS\n\n");
+	
+	printf("1 - Change Password\n");
+	printf("2 - Change Email\n");
+	printf("3 - Change Telephone Number\n");
+	printf("4 - RETURN\n\n");
+
+
+	printf("Enter Your Choice : \n");
+	scanf("%d" , &page);
+
+	switch(page){
+		case 1: 
+		case 2: 
+		case 3: 
+
+		case 4: 
+			system("clear");
+			break;
+
+		default :
+			printf("Please Enter A Number Between 1 and 4");
+			exit(0);
+	}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1097,6 +1149,17 @@ void timer(long long int failed_time){
 	do{
 		new_time = time(NULL);
 	}while(new_time - failed_time != 10);
+}
+
+
+void active_user(char user[21] , char pass[21] ){
+
+	FILE *current ;
+	current = fopen("cr_user.txt" , "w");
+
+	fprintf(current , "%s\t%s" , user , pass);
+	
+	fclose(current);
 }
 
 
