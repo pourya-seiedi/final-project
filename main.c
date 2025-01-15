@@ -1245,7 +1245,147 @@ void ch_pass(void){
 
 
 
-void ch_email(void){}
+void ch_email(void){
+
+
+	system("clear");
+
+	char new_email[21] , id[15];
+	
+	printf("Enter New email\n");
+	scanf("%s" , new_email);
+
+
+	char user[21] , pass[21];
+	FILE *user_data ;
+	user_data = fopen("cr_user.txt" , "r");
+	fscanf(user_data , "%s%s" , user , pass);
+	fclose(user_data);
+
+
+	struct cu_data{
+		
+		char status[4] ;
+		char user_name[21] ;
+		char password[21] ;
+		char gl_id[15] ;
+
+		struct cu_data *node ;
+	
+	};
+
+	struct cu_data  *q , *d;
+	q = malloc(sizeof(struct cu_data));
+
+	struct cu_data *s , *t ;
+	s =  q ;
+	t = s ;
+
+	FILE *staff_pass ;
+	staff_pass = fopen("STAFF_PASS.txt" , "r");
+	rewind(staff_pass);
+	fflush(staff_pass);
+
+	while(1 > 0){
+	
+		d = malloc(sizeof(struct cu_data));
+
+		if(feof(staff_pass) != 0 ){
+			break;
+		}
+
+		fscanf(staff_pass , "%s%s%s" , q->status , q->user_name ,  q->password) , q->gl_id;
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
+
+	}
+
+	fclose(staff_pass);
+
+	while(t->node != NULL){
+		
+		if(strcmp(user , t->user_name) == 0){
+			strcpy(id, t-> gl_id);
+		}
+		t = t->node ; 
+	}
+
+	
+	struct staff_d{
+		char status[5] ;
+		char name[21] ;
+		char lname[21] ;
+		char id[12] ;
+		char date[12] ;
+		char tel[12] ;
+		char email[101] ;
+		char gl_id[15] ;
+		
+		struct staff_d *node ;
+	};
+	
+
+	struct staff_d  *l , *g;
+	l = malloc(sizeof(struct staff_d));
+
+	struct staff_d *f , *k ;
+	f =  l ;
+	k = f ;
+
+	FILE *staff_data ;
+	staff_data = fopen("STAFF_DATA.txt" , "r");
+	rewind(staff_data);
+	fflush(staff_data);
+
+
+	while(1 > 0){
+	
+		g = malloc(sizeof(struct staff_d));
+
+		if(feof(staff_pass) != 0 ){
+			break;
+		}
+
+		fscanf(staff_pass , "%s%s%s%s%s%s%s%s" , l->status , l->name ,  l->lname , l->id , l->date , l->tel , l->email , l->gl_id ;
+		l->node = g ;
+		l = g ;
+		g->node = NULL;
+	}
+	
+	fclose(staff_data);
+	
+
+
+	staff_data = fopen("STAFF_DATA.txt" , "w");
+	rewind(staff_data);
+	fflush(staff_data);
+
+
+	while(k->node != NULL){
+
+
+		if(strcmp(id , k->gl_id) == 0){
+			strcpy(t->email , new_email);
+		}
+
+		fprintf(staff_data ,"%-5s" , t->status );
+		fprintf(staff_data ,"%-20s" , t->name );
+		fprintf(staff_data ,"%-20s" , t->lname );
+		fprintf(staff_data ,"%-10s" , t->id );
+		fprintf(staff_data ,"%-10s" , t->hire_date );
+		fprintf(staff_data ,"%-15s" , t->tel );
+		fprintf(staff_data ,"%-25s" , t->email);
+		fprintf(staff_data ,"%-15s" , t->gl_id);
+		fprintf("\n");
+
+		k = k->node ; 
+	}
+
+	fclose(staff_data);
+
+
+}
 void ch_tell(void){}
 
 
