@@ -768,7 +768,8 @@ void staff_check(void){
 	struct users{
 		char status[4] ;
 		char user_name[21] ;
-		char password[21] ; 
+		char password[21] ;
+		char id[15] ;
 		struct users *node ;
 	};
 
@@ -801,7 +802,7 @@ void staff_check(void){
 			break;
 		}
 
-		fscanf(staff_pass , "%s%s%s" , q->status , q->user_name , q->password);
+		fscanf(staff_pass , "%s%s%s%s" , q->status , q->user_name , q->password , q->id);
 		q->node = d ;
 		q = d ;
 		d->node = NULL;
@@ -1125,6 +1126,8 @@ void setting(void){
 			ch_pass();
 			setting();
 		case 2: 
+			ch_email();
+			setting();
 		case 3: 
 
 		case 4: 
@@ -1203,7 +1206,7 @@ void ch_pass(void){
 			break;
 		}
 
-		fscanf(staff_pass , "%s%s%s" , q->status , q->user_name ,  q->password) , q->gl_id;
+		fscanf(staff_pass , "%s%s%s%s" , q->status , q->user_name ,  q->password , q->gl_id);
 		q->node = d ;
 		q = d ;
 		d->node = NULL;
@@ -1223,13 +1226,15 @@ void ch_pass(void){
 		if(strcmp(user , t->user_name) == 0){
 			strcpy(t->password , new_pass);
 		}	
-
-		fprintf(staff_pass , "%-5s"  , t->status );
-		fprintf(staff_pass , "%-20s" , t->user_name);
-		fprintf(staff_pass , "%-20s" , t->password);
-		fprintf(staff_pass , "%-15s" , t->gl_id);
-		fprintf(staff_pass , "\n");
-
+		if(strcmp(t->status , "ACT") == 0 || strcmp(t->status , "DCT") == 0 ){
+		
+			fprintf(staff_pass , "%-5s"  , t->status );
+			fprintf(staff_pass , "%-20s" , t->user_name);
+			fprintf(staff_pass , "%-20s" , t->password);
+			fprintf(staff_pass , "%-15s" , t->gl_id);
+			fprintf(staff_pass , "\n");
+		
+		}
 		t = t->node;
 	}
 
@@ -1347,7 +1352,7 @@ void ch_email(void){
 			break;
 		}
 
-		fscanf(staff_pass , "%s%s%s%s%s%s%s%s" , l->status , l->name ,  l->lname , l->id , l->date , l->tel , l->email , l->gl_id ;
+		fscanf(staff_pass , "%s%s%s%s%s%s%s%s" , l->status , l->name ,  l->lname , l->id , l->date , l->tel , l->email , l->gl_id );
 		l->node = g ;
 		l = g ;
 		g->node = NULL;
@@ -1366,18 +1371,18 @@ void ch_email(void){
 
 
 		if(strcmp(id , k->gl_id) == 0){
-			strcpy(t->email , new_email);
+			strcpy(k->email , new_email);
 		}
 
-		fprintf(staff_data ,"%-5s" , t->status );
-		fprintf(staff_data ,"%-20s" , t->name );
-		fprintf(staff_data ,"%-20s" , t->lname );
-		fprintf(staff_data ,"%-10s" , t->id );
-		fprintf(staff_data ,"%-10s" , t->hire_date );
-		fprintf(staff_data ,"%-15s" , t->tel );
-		fprintf(staff_data ,"%-25s" , t->email);
-		fprintf(staff_data ,"%-15s" , t->gl_id);
-		fprintf("\n");
+		fprintf(staff_data ,"%-5s" , k->status );
+		fprintf(staff_data ,"%-20s" , k->name );
+		fprintf(staff_data ,"%-20s" , k->lname );
+		fprintf(staff_data ,"%-10s" , k->id );
+		fprintf(staff_data ,"%-10s" , k->date );
+		fprintf(staff_data ,"%-15s" , k->tel );
+		fprintf(staff_data ,"%-25s" , k->email);
+		fprintf(staff_data ,"%-15s" , k->gl_id);
+		fprintf(staff_data ,"\n");
 
 		k = k->node ; 
 	}
