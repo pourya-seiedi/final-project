@@ -184,6 +184,8 @@ void Add_Staff(void){
 	char name[21] , lname[21] , hire_date[11] , id[11];
 	char tel[13] , email[101] , user_name[21] ;
 	char password[20] ;
+	long long int gl_id = time(NULL);
+
 
 	printf("Name : ");
 	scanf("%s" , name);
@@ -215,16 +217,17 @@ void Add_Staff(void){
 
 	fflush(staff_data);
 	fprintf(staff_data , "%-5s" , "ACT");
-	fprintf(staff_data , "%-20s" , name);
-	fprintf(staff_data , "%-20s" , lname);
-	fprintf(staff_data , "%-10s" , id);
+	fprintf(staff_data , "%-21s" , name);
+	fprintf(staff_data , "%-21s" , lname);
+	fprintf(staff_data , "%-12s" , id);
 
 	// hire date - PASS
-	fprintf(staff_data , "%-10s" , "----" );
+	fprintf(staff_data , "%-12s" , "----" );
 	//---------
 	
-	fprintf(staff_data , "%-15s" , tel );
-	fprintf(staff_data , "%-25s" , email);
+	fprintf(staff_data , "%-12s" , tel );
+	fprintf(staff_data , "%-50s" , email);
+	fprintf(staff_data , "%-15lld" , gl_id);
 	fprintf(staff_data , "\n");
 
 
@@ -233,7 +236,7 @@ void Add_Staff(void){
 
 	user_pass = fopen("STAFF_PASS.txt" , "a");
 	
-	fprintf(user_pass , "%-5s%-20s%-20s\n" , "ACT" , user_name , password);
+	fprintf(user_pass , "%-5s%-21s%-21s%-15lld\n" , "ACT" , user_name , password , gl_id);
 	
 	fclose(user_pass);
 	system("clear");
@@ -286,6 +289,7 @@ void delete_staff(void){
 		char id[12] ;
 		char tel[13] ;
 		char email[101] ;
+		char global_id[15] ; 
 		struct cu_data *node ;
 	
 	};
@@ -306,7 +310,7 @@ void delete_staff(void){
 	
 		d = malloc(sizeof(struct cu_data));
 
-		fscanf(staff_data , "%s%s%s%s%s%s%s" , q->status , q->name ,  q->lname , q->id , q->hire_date , q->tel , q->email );
+		fscanf(staff_data , "%s%s%s%s%s%s%s%s" , q->status , q->name ,  q->lname , q->id , q->hire_date , q->tel , q->email , q->global_id);
 		q->node = d ;
 		q = d ;
 		d->node = NULL;
@@ -332,12 +336,13 @@ void delete_staff(void){
 		
 		if(strcmp(t->status , "ACT") == 0 || strcmp(t->status , "DCT") == 0){
 			fprintf(staff_data , "%-5s" , t->status );
-			fprintf(staff_data , "%-20s" , t->name );
-			fprintf(staff_data , "%-20s" , t->lname );
-			fprintf(staff_data , "%-10s" , t->id );
-			fprintf(staff_data , "%-10s" , t->hire_date );
-			fprintf(staff_data , "%-15s" , t->tel );
-			fprintf(staff_data , "%-25s" , t->email);
+			fprintf(staff_data , "%-21s" , t->name );
+			fprintf(staff_data , "%-21s" , t->lname );
+			fprintf(staff_data , "%-12s" , t->id );
+			fprintf(staff_data , "%-11s" , t->hire_date );
+			fprintf(staff_data , "%-13s" , t->tel );
+			fprintf(staff_data , "%-50s" , t->email);
+			fprintf(staff_data , "%-15s" , t->global_id);
 			fprintf(staff_data , "\n");
 		}
 
@@ -351,6 +356,7 @@ void delete_staff(void){
 		char status[4] ;
 		char username[21] ;
 		char password[21] ;
+		char global_id[15] ;
 		struct users *node ; 
 	};
 
@@ -375,7 +381,7 @@ void delete_staff(void){
 			break;
 		}
 
-		fscanf(staff_data , "%s%s%s" , l->status , l->username , l->password );
+		fscanf(staff_data , "%s%s%s%s" , l->status , l->username , l->password , l->global_id );
 		
 		l->node = g ;
 		l = g ;
@@ -398,8 +404,9 @@ void delete_staff(void){
 		
 		if(strcmp(k->status , "ACT") == 0 || strcmp(k->status , "DCT") == 0){
 			fprintf(staff_pass , "%-5s" , k->status );
-			fprintf(staff_pass , "%-20s" , k->username );
-			fprintf(staff_pass , "%-20s" , k->password );
+			fprintf(staff_pass , "%-21s" , k->username );
+			fprintf(staff_pass , "%-21s" , k->password );
+			fprintf(staff_pass , "%-15s" , k->global_id );
 			fprintf(staff_pass , "\n");
 		}
 
@@ -504,6 +511,7 @@ void fired_staff_list(void){
 		char id[12] ;
 		char tel[13] ;
 		char email[101] ;
+		char gl_id[15] ; 
 		struct cu_data *node ;
 	
 	};
@@ -524,7 +532,7 @@ void fired_staff_list(void){
 	
 		d = malloc(sizeof(struct cu_data));
 
-		fscanf(staff_data , "%s%s%s%s%s%s%s" , q->status , q->name ,  q->lname , q->id , q->hire_date , q->tel , q->email );
+		fscanf(staff_data , "%s%s%s%s%s%s%s%s" , q->status , q->name ,  q->lname , q->id , q->hire_date , q->tel , q->email , q->gl_id);
 		q->node = d ;
 		q = d ;
 		d->node = NULL;
@@ -548,6 +556,7 @@ void fired_staff_list(void){
 			printf("%-10s" , t->hire_date );
 			printf("%-15s" , t->tel );
 			printf("%-25s" , t->email);
+			printf("%-15s" , t->gl_id);
 			printf("\n");
 
 		}
@@ -1168,6 +1177,7 @@ void ch_pass(void){
 		char status[4] ;
 		char user_name[21] ;
 		char password[21] ;
+		char gl_id[15] ;
 
 		struct cu_data *node ;
 	
@@ -1193,7 +1203,7 @@ void ch_pass(void){
 			break;
 		}
 
-		fscanf(staff_pass , "%s%s%s" , q->status , q->user_name ,  q->password);
+		fscanf(staff_pass , "%s%s%s" , q->status , q->user_name ,  q->password) , q->gl_id;
 		q->node = d ;
 		q = d ;
 		d->node = NULL;
@@ -1217,6 +1227,7 @@ void ch_pass(void){
 		fprintf(staff_pass , "%-5s"  , t->status );
 		fprintf(staff_pass , "%-20s" , t->user_name);
 		fprintf(staff_pass , "%-20s" , t->password);
+		fprintf(staff_pass , "%-15s" , t->gl_id);
 		fprintf(staff_pass , "\n");
 
 		t = t->node;
