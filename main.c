@@ -30,6 +30,7 @@ void setting(void);
 void ch_pass(void);
 void ch_email(void);
 void ch_tell(void);
+void customer_page(void);
 
 //---------------------------------------
 
@@ -97,6 +98,10 @@ void menu(void){
 			//Staff_page();
 		
 		case 3 :
+			system("clear");
+			//customer_check
+			customer_page();
+			
 			system("clear");
 		
 		case 4 :
@@ -1544,6 +1549,132 @@ void ch_tell(void){
 
 
 }
+
+// customer ------------------------------------------------------------------------
+
+
+//void customer_check(void){}
+
+
+void customer_page(void){
+
+	system("clear");
+
+	printf("\nCUSTOMER MENU\n\n");
+
+	printf("1 - Rent Book\n");
+	printf("2 - ------\n");
+	printf("3 - ");
+	printf();
+	printf();
+	printf();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
