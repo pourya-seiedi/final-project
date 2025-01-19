@@ -1819,51 +1819,42 @@ void deactive_m(void){
 
 void customer_page(void){
 
-	system("clear");
+	int page ;
+
 
 	printf("\nCUSTOMER MENU\n\n");
+	
 
 	printf("1 - Rent Book\n");
 	printf("2 - ------\n");
-	printf("3 - ");
-	//printf();
-	//printf();
-	//printf();
+	printf("3 - ------");
+	printf("4 - Available Book\n");
+	printf("5 - Setting\n");
+	printf("6 - Return\n\n");
 
 
+	printf("Enter Yout Choice\n");
+	scanf("%d" , &page);
+	
 
+	switch(page){
 
+		case 1: 
+		case 2: 
+		case 3: 
+		case 4: 
+		case 5: 
+		case 6: 
+			system("clear");
+			menu();
 
+		default : 
+			printf("enter number 1 to 6");
+			exit(0);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
