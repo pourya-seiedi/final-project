@@ -16,9 +16,9 @@ void timer_sec(int sec);
 void Add_Staff(void);
 void Staff_list(void);
 void delete_staff(void);
-void staff_check(void);
 void Staff_page(void);
 void add_customer(void);
+void staff_check(void);
 void customer_list(void);
 void add_book(void);
 void delete_customer(void);
@@ -33,6 +33,12 @@ void ch_pass(void);
 void ch_email(void);
 void ch_tell(void);
 void customer_page(void);
+void staff_logs(void);
+void active_m(void);
+void fired_m(void);
+void deactive_m(void);
+
+
 
 //---------------------------------------
 
@@ -872,6 +878,8 @@ void Staff_page(void){
 			Staff_page();
 			
 		case 6 :
+			staff_logs();
+			Staff_page();
 		case 7 :
 			setting();
 			Staff_page();
@@ -1549,8 +1557,259 @@ void ch_tell(void){
 
 	fclose(staff_data);
 
+}
+
+
+void staff_logs(void){
+
+	int page ;
+
+
+	printf("\nStaff Logs\n\n");
+
+	printf("1 - Active Members\n");
+	printf("2 - Fired Members\n");
+	printf("3 - DeActive Members\n");
+	printf("4 - Non-Available Book\n");
+	printf("5 - Available Book\n");
+	printf("6 - Members Book History\n");
+	printf("7 - Members Sign Up History\n");
+	printf("8 - Refresh Non-Available Book\n");
+	printf("9 - Return\n\n");
+
+	printf("Enter Your Choice\n");
+	scanf("%d" , &page);
+	
+	system("clear");
+	
+	switch(page){
+		case 1:
+			active_m();
+			staff_logs();
+		
+		case 2:
+			fired_m();
+			staff_logs();
+
+		case 3:
+			deactive_m();
+			staff_logs();
+
+		case 4:
+			nva_book_list();
+			staff_logs();
+
+		case 5:
+			ava_book_list();
+			staff_logs();
+		
+		case 6:
+		case 7:
+		case 8:
+		
+		case 9:
+			system("clear");
+			Staff_page();
+		
+		default :
+			printf("enter a number 1 to 9");
+			exit(0);
+	}
 
 }
+
+
+void active_m(void){
+
+
+	struct cu_data{
+		
+		char status[4] ;
+		char name[21] ;
+		char lname[21] ;
+		char hire_date[11] ;
+		char id[12] ;
+		char tel[13] ;
+		char email[101] ;
+		struct cu_data *node ;
+	
+	};
+
+	struct cu_data  *q , *d;
+	q = malloc(sizeof(struct cu_data));
+
+	struct cu_data *s , *t ;
+	s =  q ;
+	t = s ;
+
+	FILE *m_data ;
+	m_data = fopen("CUSTOMER_DATA.txt" , "r");
+	rewind(m_data);
+	fflush(m_data);
+
+	while(1 > 0){
+	
+		d = malloc(sizeof(struct cu_data));
+
+		fscanf(m_data , "%s%s%s%s%s%s%s" , q->status , q->name ,  q->lname , q->id , q->hire_date , q->tel , q->email );
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
+
+		if(feof(m_data) != 0 ){
+			break;
+		}
+
+	}
+
+	fclose(m_data);
+	
+	
+	while(t != NULL){
+		
+		if(strcmp(t->status , "ACT") == 0){
+			printf("%-5s" , t->status );
+			printf("%-20s" , t->name );
+			printf("%-20s" , t->lname );
+			printf("%-10s" , t->id );
+			printf("%-10s" , t->hire_date );
+			printf("%-15s" , t->tel );
+			printf("%-25s" , t->email);
+			printf("\n");
+
+		}
+		t = t->node;
+	}
+}
+void fired_m(void){
+
+	struct cu_data{
+		
+		char status[4] ;
+		char name[21] ;
+		char lname[21] ;
+		char hire_date[11] ;
+		char id[12] ;
+		char tel[13] ;
+		char email[101] ;
+		struct cu_data *node ;
+	
+	};
+
+	struct cu_data  *q , *d;
+	q = malloc(sizeof(struct cu_data));
+
+	struct cu_data *s , *t ;
+	s =  q ;
+	t = s ;
+
+	FILE *m_data ;
+	m_data = fopen("CUSTOMER_DATA.txt" , "r");
+	rewind(m_data);
+	fflush(m_data);
+
+	while(1 > 0){
+	
+		d = malloc(sizeof(struct cu_data));
+
+		fscanf(m_data , "%s%s%s%s%s%s%s" , q->status , q->name ,  q->lname , q->id , q->hire_date , q->tel , q->email );
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
+
+		if(feof(m_data) != 0 ){
+			break;
+		}
+
+	}
+
+	fclose(m_data);
+	
+	
+	while(t != NULL){
+		
+		if(strcmp(t->status , "FCT") == 0){
+			printf("%-5s" , t->status );
+			printf("%-20s" , t->name );
+			printf("%-20s" , t->lname );
+			printf("%-10s" , t->id );
+			printf("%-10s" , t->hire_date );
+			printf("%-15s" , t->tel );
+			printf("%-25s" , t->email);
+			printf("\n");
+
+		}
+		t = t->node;
+	}
+
+
+}
+void deactive_m(void){
+
+
+	struct cu_data{
+		
+		char status[4] ;
+		char name[21] ;
+		char lname[21] ;
+		char hire_date[11] ;
+		char id[12] ;
+		char tel[13] ;
+		char email[101] ;
+		struct cu_data *node ;
+	
+	};
+
+	struct cu_data  *q , *d;
+	q = malloc(sizeof(struct cu_data));
+
+	struct cu_data *s , *t ;
+	s =  q ;
+	t = s ;
+
+	FILE *m_data ;
+	m_data = fopen("CUSTOMER_DATA.txt" , "r");
+	rewind(m_data);
+	fflush(m_data);
+
+	while(1 > 0){
+	
+		d = malloc(sizeof(struct cu_data));
+
+		fscanf(m_data , "%s%s%s%s%s%s%s" , q->status , q->name ,  q->lname , q->id , q->hire_date , q->tel , q->email );
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
+
+		if(feof(m_data) != 0 ){
+			break;
+		}
+
+	}
+
+	fclose(m_data);
+	
+	
+	while(t != NULL){
+		
+			if(strcmp(t->status , "DCT") == 0){
+			printf("%-5s" , t->status );
+			printf("%-20s" , t->name );
+			printf("%-20s" , t->lname );
+			printf("%-10s" , t->id );
+			printf("%-10s" , t->hire_date );
+			printf("%-15s" , t->tel );
+			printf("%-25s" , t->email);
+			printf("\n");
+
+		}
+		t = t->node;
+	}
+
+
+}
+
+
 
 // customer ------------------------------------------------------------------------
 
@@ -1567,9 +1826,9 @@ void customer_page(void){
 	printf("1 - Rent Book\n");
 	printf("2 - ------\n");
 	printf("3 - ");
-	printf();
-	printf();
-	printf();
+	//printf();
+	//printf();
+	//printf();
 
 
 
