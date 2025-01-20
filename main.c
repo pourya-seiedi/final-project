@@ -36,7 +36,10 @@ void active_m(void);
 void fired_m(void);
 void deactive_m(void);
 void customer_check(void);
-
+void cu_setting(void);
+void cu_ch_pass(void);
+void cu_ch_email(void);
+void cu_ch_tell(void);
 
 
 //---------------------------------------
@@ -1965,7 +1968,7 @@ void customer_page(void){
 
 	printf("1 - Rent Book\n");
 	printf("2 - ------\n");
-	printf("3 - ------");
+	printf("3 - ------\n");
 	printf("4 - Available Book\n");
 	printf("5 - Setting\n");
 	printf("6 - Return\n\n");
@@ -1982,6 +1985,8 @@ void customer_page(void){
 		case 3: 
 		case 4: 
 		case 5: 
+			cu_setting();
+			customer_page();
 		case 6: 
 			system("clear");
 			menu();
@@ -1994,69 +1999,155 @@ void customer_page(void){
 
 }
 
+void cu_setting(void){
+
+	int page ; 
+	
+	system("clear");
+	printf("SETTINGS\n\n");
+	
+	printf("1 - Change Password\n");
+	printf("2 - Change Email\n");
+	printf("3 - Change Telephone Number\n");
+	printf("4 - RETURN\n\n");
+
+
+	printf("Enter Your Choice : \n");
+	scanf("%d" , &page);
+
+	switch(page){
+		case 1: 
+			cu_ch_pass();
+			setting();
+		
+		case 2: 
+			cu_ch_email();
+			setting();
+		
+		case 3: 
+			cu_ch_tell();
+			setting();
+		
+		case 4: 
+			system("clear");
+			break;
+
+		default :
+			printf("Please Enter A Number Between 1 and 4");
+			exit(0);
+	}
+
+}
 
 
 
+void cu_ch_pass(void){
+
+	system("clear");
+
+	char new_pass[21] , pass_check[21];
+	
+	printf("Enter New Password\n");
+	scanf("%s" , new_pass);
+	
+	printf("Enter New Password Again\n");
+	scanf("%s" , pass_check);
+
+
+	char user[21] , pass[21];
+	FILE *user_data ;
+	user_data = fopen("cr_user.txt" , "r");
+	fscanf(user_data , "%s%s" , user , pass);
+	fclose(user_data);
+
+
+	if(strcmp(new_pass , pass) == 0){
+		printf("Please Enter New Password\n");
+		timer_sec(3);
+		setting();
+	}
+
+	if(strcmp(new_pass , pass_check) != 0){
+		printf("Wrong Password Confirmation\n");
+		timer_sec(3);
+		setting();
+	}
+
+
+	struct cu_data{
+		
+		char status[4] ;
+		char user_name[21] ;
+		char password[21] ;
+		char gl_id[15] ;
+
+		struct cu_data *node ;
+	
+	};
+
+	struct cu_data  *q , *d;
+	q = malloc(sizeof(struct cu_data));
+
+	struct cu_data *s , *t ;
+	s =  q ;
+	t = s ;
+
+	FILE *m_pass ;
+	m_pass = fopen("CUSTOMER_PASS.txt" , "r");
+	rewind(m_pass);
+	fflush(m_pass);
+
+	while(1 > 0){
+	
+		d = malloc(sizeof(struct cu_data));
+
+		if(feof(m_pass) != 0 ){
+			break;
+		}
+
+		fscanf(m_pass , "%s%s%s%s" , q->status , q->user_name ,  q->password , q->gl_id);
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
+
+	}
+
+	fclose(m_pass);
+	
+	
+	m_pass = fopen("CUSTOMER_PASS.txt" , "w");
+	rewind(m_pass);
+	fflush(m_pass);
+
+
+	while(t->node != NULL){
+		
+		if(strcmp(user , t->user_name) == 0){
+			strcpy(t->password , new_pass);
+		}	
+		if(strcmp(t->status , "ACT") == 0 || strcmp(t->status , "DCT") == 0 ){
+		
+			fprintf(m_pass , "%-5s"  , t->status );
+			fprintf(m_pass , "%-20s" , t->user_name);
+			fprintf(m_pass , "%-20s" , t->password);
+			fprintf(m_pass , "%-15s" , t->gl_id);
+			fprintf(m_pass , "\n");
+		
+		}
+		t = t->node;
+	}
+
+	fclose(m_pass);
+
+	printf("Operation Done\n");
 
 
 
+	timer_sec(2);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
+void cu_ch_email(void){}
+void cu_ch_tell(void){}
 
 
 
