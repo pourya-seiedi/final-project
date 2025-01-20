@@ -35,6 +35,7 @@ void staff_logs(void);
 void active_m(void);
 void fired_m(void);
 void deactive_m(void);
+void customer_check(void);
 
 
 
@@ -105,8 +106,7 @@ void menu(void){
 		
 		case 3 :
 			system("clear");
-			//customer_check
-			customer_page();
+			customer_check();
 			
 			system("clear");
 		
@@ -1890,7 +1890,69 @@ void deactive_m(void){
 // customer ------------------------------------------------------------------------
 
 
-//void customer_check(void){}
+void customer_check(void){
+
+	struct users{
+		char status[4] ;
+		char user_name[21] ;
+		char password[21] ;
+		char id[15] ;
+		struct users *node ;
+	};
+
+
+	char user[21] , pass[21];
+
+	printf("Enter User Name : \n");
+	scanf("%s" , user);
+
+	printf("Enter Password : \n");
+	scanf("%s" , pass);
+
+	struct users  *q , *d;
+	q = malloc(sizeof(struct users));
+
+	struct users *s , *t ;
+	s =  q ;
+	t = s ;
+
+	FILE *cu_pass ;
+	cu_pass = fopen("CUSTOMER_PASS.txt" , "r");
+	rewind(cu_pass);
+	fflush(cu_pass);
+
+	while(1 > 0){
+	
+		d = malloc(sizeof(struct users));
+		
+		if(feof(cu_pass) != 0 ){
+			break;
+		}
+
+		fscanf(cu_pass , "%s%s%s%s" , q->status , q->user_name , q->password , q->id);
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
+
+	}
+
+	fclose(cu_pass);
+
+	
+	while(t != NULL){
+	
+		if(strcmp(t->status , "ACT") == 0 && strcmp(t->user_name , user) == 0 && strcmp(t->password , pass) == 0){
+			system("clear");
+			active_user(user , pass);
+			customer_page();
+		}
+
+		t = t->node ;
+	}
+
+	system("clear");
+
+}
 
 
 void customer_page(void){
@@ -1898,7 +1960,7 @@ void customer_page(void){
 	int page ;
 
 
-	printf("\nCUSTOMER MENU\n\n");
+	printf("\nMEMBERS MENU\n\n");
 	
 
 	printf("1 - Rent Book\n");
