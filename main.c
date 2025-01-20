@@ -2030,6 +2030,7 @@ void cu_setting(void){
 		
 		case 4: 
 			system("clear");
+			customer_page();
 			break;
 
 		default :
@@ -2295,7 +2296,149 @@ void cu_ch_email(void){
 
 
 }
-void cu_ch_tell(void){}
+void cu_ch_tell(void){
+
+	system("clear");
+
+	char new_tel[21] , id[15];
+	
+	printf("Enter New Telphone Number\n");
+	scanf("%s" , new_tel);
+
+
+	char user[21] , pass[21];
+	FILE *user_data ;
+	user_data = fopen("cr_user.txt" , "r");
+	fscanf(user_data , "%s%s" , user , pass);
+	fclose(user_data);
+
+
+	struct cu_data{
+		
+		char status[4] ;
+		char user_name[21] ;
+		char password[21] ;
+		char gl_id[15] ;
+
+		struct cu_data *node ;
+	
+	};
+
+	struct cu_data  *q , *d;
+	q = malloc(sizeof(struct cu_data));
+
+	struct cu_data *s , *t ;
+	s =  q ;
+	t = s ;
+
+	FILE *m_pass ;
+	m_pass = fopen("STAFF_PASS.txt" , "r");
+	rewind(m_pass);
+	fflush(m_pass);
+
+	while(1 > 0){
+	
+		d = malloc(sizeof(struct cu_data));
+
+		if(feof(m_pass) != 0 ){
+			break;
+		}
+
+		fscanf(m_pass , "%s%s%s%s" , q->status , q->user_name ,  q->password , q->gl_id );
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
+
+	}
+
+	fclose(m_pass);
+
+	while(t->node != NULL){
+		
+		if(strcmp(user , t->user_name) == 0){
+			strcpy(id, t->gl_id);
+		}
+		t = t->node ; 
+	}
+
+	
+	struct m_d{
+		char status[5] ;
+		char name[21] ;
+		char lname[21] ;
+		char id[12] ;
+		char date[12] ;
+		char tel[12] ;
+		char email[101] ;
+		char gl_id[15] ;
+		
+		struct m_d *node ;
+	};
+	
+
+	struct m_d  *l , *g;
+	l = malloc(sizeof(struct m_d));
+
+	struct m_d *f , *k ;
+	f =  l ;
+	k = f ;
+
+	FILE *m_data ;
+	m_data = fopen("CUSTOMER_DATA.txt" , "r");
+	rewind(m_data);
+	fflush(m_data);
+
+
+	while(1 > 0){
+	
+		g = malloc(sizeof(struct m_d));
+
+		if(feof(m_data) != 0 ){
+			break;
+		}
+
+		fscanf(m_data , "%s%s%s%s%s%s%s%s" , l->status , l->name ,  l->lname , l->id , l->date , l->tel , l->email , l->gl_id );
+		l->node = g ;
+		l = g ;
+		g->node = NULL;
+	}
+	
+	fclose(m_data);
+	
+
+
+	m_data = fopen("CUSTOMER_DATA.txt" , "w");
+	rewind(m_data);
+	fflush(m_data);
+
+
+	while(k->node != NULL){
+
+
+		if(strcmp(id , k->gl_id) == 0){
+			strcpy(k->tel , new_tel);
+		}
+		
+		if(strcmp(k->status , "ACT") == 0 || strcmp(k->status , "DCT") == 0 ){
+		
+			fprintf(m_data ,"%-5s" , k->status );
+			fprintf(m_data ,"%-20s" , k->name );
+			fprintf(m_data ,"%-20s" , k->lname );
+			fprintf(m_data ,"%-10s" , k->id );
+			fprintf(m_data ,"%-10s" , k->date );
+			fprintf(m_data ,"%-15s" , k->tel );
+			fprintf(m_data ,"%-25s" , k->email);
+			fprintf(m_data ,"%-15s" , k->gl_id);
+			fprintf(m_data ,"\n");
+
+		}
+
+		k = k->node ; 
+	}
+
+	fclose(m_data);
+
+}
 
 
 
