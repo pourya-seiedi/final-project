@@ -2149,7 +2149,7 @@ void cu_ch_pass(void){
 }
 
 
-
+/// bug 
 void cu_ch_email(void){
 
 	system("clear");
