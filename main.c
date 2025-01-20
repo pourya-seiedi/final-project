@@ -2018,15 +2018,15 @@ void cu_setting(void){
 	switch(page){
 		case 1: 
 			cu_ch_pass();
-			setting();
+			cu_setting();
 		
 		case 2: 
 			cu_ch_email();
-			setting();
+			cu_setting();
 		
 		case 3: 
 			cu_ch_tell();
-			setting();
+			cu_setting();
 		
 		case 4: 
 			system("clear");
@@ -2266,7 +2266,7 @@ void cu_ch_email(void){
 	fflush(m_data);
 
 
-	while(k->node != NULL){
+	while(k != NULL){
 
 
 		if(strcmp(id , k->gl_id) == 0){
@@ -2412,7 +2412,7 @@ void cu_ch_tell(void){
 	fflush(m_data);
 
 
-	while(k->node != NULL){
+	while(k != NULL){
 
 
 		if(strcmp(id , k->gl_id) == 0){
