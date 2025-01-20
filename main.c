@@ -898,6 +898,7 @@ void add_customer(void){
 	char name[21] , lname[21] , sub_date[11] , id[11];
 	char tel[13] , email[101] , user_name[21] ;
 	char password[21] ;
+	long long int gl_id = time(NULL);
 
 	printf("Name : ");
 	scanf("%s" , name);
@@ -939,6 +940,7 @@ void add_customer(void){
 	
 	fprintf(customer_data , "%-15s" , tel );
 	fprintf(customer_data , "%-25s" , email);
+	fprintf(customer_data , "%-15lld" , gl_id);
 	fprintf(customer_data , "\n");
 
 
@@ -947,7 +949,7 @@ void add_customer(void){
 
 	user_pass = fopen("CUSTOMER_PASS.txt" , "a");
 	
-	fprintf(user_pass , "%-5s%-20s%-20s\n" , "ACT" , user_name , password);
+	fprintf(user_pass , "%-5s%-20s%-20s%-15lld\n" , "ACT" , user_name , password , gl_id);
 	
 	fclose(user_pass);
 	system("clear");
@@ -1040,9 +1042,14 @@ void add_book(void){
 
 void delete_customer(void){
 
-	char cu_id[12] ; 
+	char cu_id[12]  , user[21]; 
 	printf("ID : \n");
 	scanf("%s" , cu_id);
+	
+
+	printf("User Name : \n");
+	scanf("%s" , user);
+	
 
 	struct cu_data{
 		
@@ -1053,6 +1060,7 @@ void delete_customer(void){
 		char id[12] ;
 		char tel[13] ;
 		char email[101] ;
+		char gl_id[15] ;
 		struct cu_data *node ;
 	
 	};
@@ -1077,7 +1085,7 @@ void delete_customer(void){
 			break;
 		}
 
-		fscanf(customer_data , "%s%s%s%s%s%s%s" , q->status , q->name ,  q->lname , q->id , q->hire_date , q->tel , q->email );
+		fscanf(customer_data , "%s%s%s%s%s%s%s%s" , q->status , q->name ,  q->lname , q->id , q->hire_date , q->tel , q->email , q->gl_id);
 		q->node = d ;
 		q = d ;
 		d->node = NULL;
@@ -1106,6 +1114,7 @@ void delete_customer(void){
 			fprintf(customer_data , "%-10s" , t->hire_date );
 			fprintf(customer_data , "%-15s" , t->tel );
 			fprintf(customer_data , "%-25s" , t->email);
+			fprintf(customer_data , "%-15s" , t->gl_id);
 			fprintf(customer_data , "\n");
 		}
 
@@ -1114,7 +1123,76 @@ void delete_customer(void){
 
 	fclose(customer_data);
 
+
+
+	struct users{
+		char status[4] ;
+		char username[21] ;
+		char password[21] ;
+		char global_id[15] ;
+		struct users *node ; 
+	};
+
+
+	struct users  *l , *g;
+	l = malloc(sizeof(struct users));
+
+	struct users *f , *k ;
+	f = l ;
+	k = f ;
+
+	FILE *cu_pass ;
+	cu_pass = fopen("CUSTOMER_PASS.txt" , "r");
+	rewind(cu_pass);
+	fflush(cu_pass);
+
+	while(1 > 0){
+	
+		g = malloc(sizeof(struct users));
+
+		if(feof(cu_pass) != 0 ){
+			break;
+		}
+
+		fscanf(cu_pass , "%s%s%s%s" , l->status , l->username , l->password , l->global_id );
+		
+		l->node = g ;
+		l = g ;
+		g->node = NULL;
+	
+	}
+
+	fclose(cu_pass);
+
+	cu_pass = fopen("CUSTOMER_PASS.txt" , "w");
+	rewind(cu_pass);
+	fflush(cu_pass);
+
+
+	while(k != NULL){
+			
+		if(strcmp(k->username , user) == 0){
+			strcpy(k->status , "DCT");
+		}
+		
+		if(strcmp(k->status , "ACT") == 0 || strcmp(k->status , "DCT") == 0){
+			fprintf(cu_pass , "%-5s" , k->status );
+			fprintf(cu_pass , "%-21s" , k->username );
+			fprintf(cu_pass , "%-21s" , k->password );
+			fprintf(cu_pass , "%-15s" , k->global_id );
+			fprintf(cu_pass , "\n");
+		}
+
+		k = k->node ;
+	}
+
+	fclose(cu_pass);
+
+
 	system("clear");
+	
+
+
 
 }
 
