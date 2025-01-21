@@ -1985,6 +1985,9 @@ void customer_page(void){
 		case 2: 
 		case 3: 
 		case 4: 
+			system("clear");
+			ava_book_list();
+			customer_page();
 		case 5: 
 			cu_setting();
 			customer_page();
