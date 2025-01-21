@@ -1,0 +1,4 @@
+GGG  mla                  mla                  ---         2000        -----       1737489065     jal                  
+YYY  mlb                  mlb                  ---         2005        -----       1737489074     jal                  
+GGG  y2k                  y2k                  ---         2001        -----       1737489091     jal                  
+YYY  lfa                  lfa                  ---         2003        -----       1737489120     jal                  

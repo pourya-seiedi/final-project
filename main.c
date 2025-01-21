@@ -42,7 +42,7 @@ void cu_ch_pass(void);
 void cu_ch_email(void);
 void cu_ch_tell(void);
 void rent(void);
-
+void rent_list(void);
 
 //---------------------------------------
 
@@ -736,7 +736,7 @@ void nva_book_list(void){
 	
 	while(t != NULL){
 
-		if(strcmp(t->status , "YYY") == 0){
+		if(strcmp(t->status , "YYY") == 0 || strcmp(t->status , "RRR") == 0){
 			
 			printf("%-5s" , t->status );
 			printf("%-20s" , t->name );
@@ -1980,7 +1980,7 @@ void customer_page(void){
 
 	printf("1 - Rent Book\n");
 	printf("2 - ------\n");
-	printf("3 - ------\n");
+	printf("3 - Rent History\n");
 	printf("4 - Available Book\n");
 	printf("5 - Setting\n");
 	printf("6 - Return\n\n");
@@ -1995,15 +1995,22 @@ void customer_page(void){
 		case 1: 
 			rent();
 			customer_page();
+		
 		case 2: 
 		case 3: 
+			system("clear");
+			rent_list();
+			customer_page();
+
 		case 4: 
 			system("clear");
 			ava_book_list();
 			customer_page();
+		
 		case 5: 
 			cu_setting();
 			customer_page();
+		
 		case 6: 
 			system("clear");
 			menu();
@@ -2168,6 +2175,86 @@ void rent(void){
 	system("clear");
 
 }
+
+
+
+
+void rent_list(void){
+
+	char user[21] , pass[21];
+	FILE *user_data ;
+	user_data = fopen("cr_user.txt" , "r");
+	fscanf(user_data , "%s%s" , user , pass);
+	fclose(user_data);
+
+
+	struct cu_data{
+		
+		char status[5] ;
+		char name[21] ;
+		char publisher[21] ;
+		char writer[21] ;
+		char publish_date[11] ;
+		char date[12] ;
+		char bnumber[12] ;
+		char user[21] ;
+		struct cu_data *node ;
+	};
+
+	struct cu_data  *q , *d;
+	q = malloc(sizeof(struct cu_data));
+
+	struct cu_data *s , *t ;
+	s =  q ;
+	t = s ;
+
+
+	FILE *m_book ;
+	m_book = fopen("BOOK_HISTORY.txt" , "r");
+	rewind(m_book);
+	fflush(m_book);
+	
+
+	while(1 > 0){	
+
+		if(feof(m_book) != 0 ){
+			break;
+		}
+	
+		d = malloc(sizeof(struct cu_data));
+
+		fscanf(m_book , "%s%s%s%s%s%s%s%s" , q->status , q->name ,  q->publisher , q->writer , q->publish_date , q->date , q->bnumber , q->user );
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
+
+	}
+	
+	fclose(m_book);
+
+	
+	while(t != NULL){
+
+		if(strcmp(t->user , user ) == 0){
+
+			printf("%-5s" , t->status );
+			printf("%-21s" , t->name );
+			printf("%-21s" , t->publisher);
+			printf("%-12s" , t->writer );
+			printf("%-12s" , t->publish_date);
+			printf("%-12s" , t->date);
+			printf("%-15s" , t->bnumber);
+			printf("%-21s" , t->user);
+			printf("\n");
+
+		}
+
+		t = t->node; 
+	}
+
+} 
+
+
 
 
 
