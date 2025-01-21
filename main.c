@@ -41,6 +41,7 @@ void cu_setting(void);
 void cu_ch_pass(void);
 void cu_ch_email(void);
 void cu_ch_tell(void);
+void rent(void);
 
 
 //---------------------------------------
@@ -626,7 +627,7 @@ void ava_book_list(void){
 		char bnumber[12] ;
 		
 		// add book should be fixed
-		//char user[21] ;
+		char user[21] ;
 		struct cu_data *node ;
 	
 	};
@@ -647,7 +648,7 @@ void ava_book_list(void){
 	
 		d = malloc(sizeof(struct cu_data));
 
-		fscanf(book , "%s%s%s%s%s%s%s" , q->status , q->name ,  q->publisher , q->writer , q->publish_date , q->date , q->bnumber );
+		fscanf(book , "%s%s%s%s%s%s%s%s" , q->status , q->name ,  q->publisher , q->writer , q->publish_date , q->date , q->bnumber , q->user);
 		q->node = d ;
 		q = d ;
 		d->node = NULL;
@@ -672,6 +673,7 @@ void ava_book_list(void){
 			printf("%-10s" , t->publish_date );
 			printf("%-15s" , t->date );
 			printf("%-25s" , t->bnumber);
+			printf("%-21s" , t->user);
 			printf("\n");
 
 		}
@@ -697,7 +699,7 @@ void nva_book_list(void){
 		char bnumber[12] ;
 		
 		// add book should be fixed
-		//char user[21] ;
+		char user[21] ;
 		struct cu_data *node ;
 	
 	};
@@ -718,7 +720,7 @@ void nva_book_list(void){
 	
 		d = malloc(sizeof(struct cu_data));
 
-		fscanf(book , "%s%s%s%s%s%s%s" , q->status , q->name ,  q->publisher , q->writer , q->publish_date , q->date , q->bnumber );
+		fscanf(book , "%s%s%s%s%s%s%s%s" , q->status , q->name ,  q->publisher , q->writer , q->publish_date , q->date , q->bnumber , q->user);
 		q->node = d ;
 		q = d ;
 		d->node = NULL;
@@ -743,6 +745,7 @@ void nva_book_list(void){
 			printf("%-10s" , t->publish_date );
 			printf("%-15s" , t->date );
 			printf("%-25s" , t->bnumber);
+			printf("%-21s" , t->user);
 			printf("\n");
 
 		}
@@ -989,6 +992,14 @@ void customer_list(void){
 
 void add_book(void){
 
+
+	char user[21] , pass[21];
+	FILE *user_data ;
+	user_data = fopen("cr_user.txt" , "r");
+	fscanf(user_data , "%s%s" , user , pass);
+	fclose(user_data);
+
+
 	// status 3 mode --> GGG - YYY - RRR
 	// GGG FREE
 	// YYY NOT AVILABLE
@@ -1030,10 +1041,10 @@ void add_book(void){
 	fprintf(book_data , "%-10s" , "-----");
 
 	// book number
-	fprintf(book_data , "%-10ld" , time(NULL));
+	fprintf(book_data , "%-15ld" , time(NULL));
 
 	// staff user name
-	//fprintf(book_data , "%-10s" , ------ );
+	fprintf(book_data , "%-21s" , user );
 
 
 	fprintf(book_data , "\n");
@@ -1982,6 +1993,8 @@ void customer_page(void){
 	switch(page){
 
 		case 1: 
+			rent();
+			customer_page();
 		case 2: 
 		case 3: 
 		case 4: 
@@ -2043,6 +2056,126 @@ void cu_setting(void){
 	}
 
 }
+
+
+void rent(void){
+
+	char user[21] , pass[21];
+	FILE *user_data ;
+	user_data = fopen("cr_user.txt" , "r");
+	fscanf(user_data , "%s%s" , user , pass);
+	fclose(user_data);
+
+
+	char book_id[20];
+	printf("\nEnter Book Number\n");
+	scanf("%s" , book_id);
+
+
+	struct cu_data{
+		
+		char status[5] ;
+		char name[21] ;
+		char publisher[21] ;
+		char writer[21] ;
+		char publish_date[11] ;
+		char date[12] ;
+		char bnumber[12] ;
+		
+		// add book should be fixed
+		char user[21] ;
+		struct cu_data *node ;
+	
+	};
+
+	struct cu_data  *q , *d;
+	q = malloc(sizeof(struct cu_data));
+
+	struct cu_data *s , *t ;
+	s =  q ;
+	t = s ;
+
+	FILE *book ;
+	book = fopen("BOOK_DATA.txt" , "r");
+	rewind(book);
+	fflush(book);
+
+	while(1 > 0){	
+
+		if(feof(book) != 0 ){
+			break;
+		}
+	
+		d = malloc(sizeof(struct cu_data));
+
+		fscanf(book , "%s%s%s%s%s%s%s%s" , q->status , q->name ,  q->publisher , q->writer , q->publish_date , q->date , q->bnumber , q->user );
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
+
+	}
+
+	fclose(book);
+
+
+	book = fopen("BOOK_DATA.txt" , "w");
+	rewind(book);
+	fflush(book);
+
+	while(t != NULL){	
+
+		if(strcmp(t->bnumber , book_id ) == 0){
+			strcpy(t->status , "YYY");
+		
+			FILE *m_book ;
+			m_book = fopen("BOOK_HISTORY.txt" , "a");
+			rewind(m_book);
+			fflush(m_book);
+
+			fprintf(m_book , "%-5s" , t->status );
+			fprintf(m_book , "%-21s" , t->name );
+			fprintf(m_book , "%-21s" , t->publisher);
+			fprintf(m_book , "%-12s" , t->writer );
+			fprintf(m_book , "%-12s" , t->publish_date);
+			fprintf(m_book , "%-12s" , t->date);
+			fprintf(m_book ,  "%-15s" , t->bnumber);
+			fprintf(m_book , "%-21s" , user);
+			fprintf(m_book , "\n");
+
+
+			fclose(m_book);
+
+
+		}
+		
+		if(strcmp(t->status , "GGG") == 0 || strcmp(t->status , "YYY") == 0 || strcmp(t->status , "RRR") == 0){
+			fprintf(book , "%-5s" , t->status );
+			fprintf(book , "%-21s" , t->name );
+			fprintf(book , "%-21s" , t->publisher);
+			fprintf(book , "%-12s" , t->writer );
+			fprintf(book , "%-12s" , t->publish_date);
+			fprintf(book , "%-12s" , t->date);
+			fprintf(book ,  "%-15s" , t->bnumber);
+			fprintf(book , "%-21s" , t->user);
+			fprintf(book , "\n");
+		}
+
+		t = t->node;
+	}
+
+	fclose(book);
+
+	system("clear");
+
+}
+
+
+
+
+
+
+
+
 
 
 
