@@ -43,6 +43,7 @@ void cu_ch_email(void);
 void cu_ch_tell(void);
 void rent(void);
 void rent_list(void);
+void return_book(void);
 
 //---------------------------------------
 
@@ -1979,7 +1980,7 @@ void customer_page(void){
 	
 
 	printf("1 - Rent Book\n");
-	printf("2 - ------\n");
+	printf("2 - Return Book\n");
 	printf("3 - Rent History\n");
 	printf("4 - Available Book\n");
 	printf("5 - Setting\n");
@@ -1997,6 +1998,9 @@ void customer_page(void){
 			customer_page();
 		
 		case 2: 
+			return_book();
+			customer_page();
+
 		case 3: 
 			system("clear");
 			rent_list();
@@ -2254,7 +2258,148 @@ void rent_list(void){
 
 } 
 
+void return_book(void){
 
+
+	
+	char user[21] , pass[21];
+	FILE *user_data ;
+	user_data = fopen("cr_user.txt" , "r");
+	fscanf(user_data , "%s%s" , user , pass);
+	fclose(user_data);
+
+
+	char id[15];
+	printf("Enter Book Id\n");
+	scanf("%s" , id);
+
+	struct cu_data{
+		
+		char status[5] ;
+		char name[21] ;
+		char publisher[21] ;
+		char writer[21] ;
+		char publish_date[11] ;
+		char date[12] ;
+		char bnumber[12] ;
+		char user[21] ;
+		struct cu_data *node ;
+	};
+
+	struct cu_data  *q , *d;
+	q = malloc(sizeof(struct cu_data));
+
+	struct cu_data *s , *t ;
+	s =  q ;
+	t = s ;
+
+
+	FILE *m_book ;
+	m_book = fopen("BOOK_HISTORY.txt" , "r");
+	rewind(m_book);
+	fflush(m_book);
+
+	while(1 > 0){	
+
+		if(feof(m_book) != 0 ){
+			break;
+		}
+	
+		d = malloc(sizeof(struct cu_data));
+
+		fscanf(m_book , "%s%s%s%s%s%s%s%s" , q->status , q->name ,  q->publisher , q->writer , q->publish_date , q->date , q->bnumber , q->user );
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
+
+	}
+	
+	fclose(m_book);
+
+	m_book = fopen("BOOK_HISTORY.txt" , "w");
+	rewind(m_book);
+	fflush(m_book);
+
+	while(t != NULL){
+
+		if(strcmp(t->bnumber , id) == 0 && strcmp(t->user , user) == 0){
+			strcpy(t->status , "GGG");
+		}
+		
+		fprintf(m_book , "%-5s" , t->status );
+		fprintf(m_book , "%-21s" , t->name );
+		fprintf(m_book , "%-21s" , t->publisher);
+		fprintf(m_book , "%-12s" , t->writer );
+		fprintf(m_book , "%-12s" , t->publish_date);
+		fprintf(m_book , "%-12s" , t->date);
+		fprintf(m_book ,  "%-15s" , t->bnumber);
+		fprintf(m_book , "%-21s" , t->user);
+		fprintf(m_book , "\n");
+
+
+		t = t->node;
+	}
+	fclose(m_book);
+
+
+
+	struct cu_data  *l , *g;
+	l = malloc(sizeof(struct cu_data));
+
+	struct cu_data *f , *k ;
+	f =  l ;
+	k = f ;
+
+	FILE *book ;
+	book = fopen("BOOK_DATA.txt" , "r");
+	rewind(book);
+	fflush(book);
+
+
+	while(1 > 0){
+		
+		if(feof(book) != 0 ){
+			break;
+		}
+
+		g = malloc(sizeof(struct cu_data));
+
+
+		fscanf(book , "%s%s%s%s%s%s%s%s" , l->status , l->name ,  l->publisher , l->writer , l->publish_date , l->date , l->bnumber , l->user);
+		l->node = g ;
+		l = g ;
+		g->node = NULL;
+	}
+	
+	fclose(book);
+
+	book = fopen("BOOK_DATA.txt" , "w");
+	rewind(book);
+	fflush(book);
+	
+
+	while(k != NULL){
+
+		if(strcmp(k->bnumber , id) == 0){
+			strcpy(k->status , "GGG");
+		}
+		
+		fprintf(book , "%-5s" , k->status );
+		fprintf(book , "%-21s" , k->name );
+		fprintf(book , "%-21s" , k->publisher);
+		fprintf(book , "%-12s" , k->writer );
+		fprintf(book , "%-12s" , k->publish_date);
+		fprintf(book , "%-12s" , k->date);
+		fprintf(book ,  "%-15s" , k->bnumber);
+		fprintf(book , "%-21s" , k->user);
+		fprintf(book , "\n");
+
+
+		k = k->node;
+	}
+	fclose(book);
+	system("clear");
+}
 
 
 
