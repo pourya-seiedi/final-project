@@ -46,7 +46,7 @@ void cu_ch_tell(void);
 void rent(void);
 void rent_list(void);
 void return_book(void);
-
+void rep_user(char user[21] , int page);
 //---------------------------------------
 
 
@@ -81,6 +81,88 @@ void main(){
 }
 //---------------------------------------
 
+
+void rep_user(char user[21] , int page){
+
+
+	if(strlen(user) > 20){
+		printf("user name lenght excced maximum lenght!!!");
+		
+
+		timer_sec(3);
+
+
+		if(page == 1){
+			Admin_page();
+		}
+		if(page == 2){
+			Staff_page();
+		}
+	}
+
+
+	struct users{
+		char status[4] ;
+		char user_name[21] ;
+		char password[21] ;
+		char id[15] ;
+		struct users *node ;
+	};
+
+
+
+	struct users  *q , *d;
+	q = malloc(sizeof(struct users));
+
+	struct users *s , *t ;
+	s =  q ;
+	t = s ;
+
+	FILE *staff_pass ;
+	staff_pass = fopen("STAFF_PASS.txt" , "r");
+	rewind(staff_pass);
+	fflush(staff_pass);
+
+	while(1 > 0){
+	
+		d = malloc(sizeof(struct users));
+		
+		if(feof(staff_pass) != 0 ){
+			break;
+		}
+
+		fscanf(staff_pass , "%s%s%s%s" , q->status , q->user_name , q->password , q->id);
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
+
+	}
+
+	fclose(staff_pass);
+
+
+	while(t != NULL){
+
+		if(strcmp(user , t->user_name) == 0){
+			printf("curent user already exist!!!\n");
+
+
+			timer_sec(3);
+			
+
+			if(page == 1){
+				system("clear");
+				Admin_page();
+			}
+			if(page == 2){
+				system("clear");
+				Staff_page();
+			}
+		}
+
+		t = t->node;
+	}
+}
 
 
 // menu body ----------------------------
@@ -202,7 +284,7 @@ void Add_Staff(void){
 	
 	char name[21] , lname[21] , hire_date[11] , id[11];
 	char tel[13] , email[101] , user_name[21] ;
-	char password[20] ;
+	char password[21] , n_password[21] ;
 	long long int gl_id = time(NULL);
 
 
@@ -226,10 +308,24 @@ void Add_Staff(void){
 	
 	printf("User Name : ");
 	scanf("%s" , user_name);
+	rep_user(user_name , 1);
 	
 	printf("Password : ");
 	scanf("%s" , password);
 	
+	printf("Enter Password Again: ");
+	scanf("%s" , n_password);
+
+	if(strcmp(password , n_password) != 0){
+		printf("password is not compatiable!!!\n");
+
+
+		timer_sec(3);
+
+
+		Admin_page();
+	}
+
 	FILE *staff_data , *user_pass ;
 
 	staff_data = fopen("STAFF_DATA.txt" , "a");
@@ -906,8 +1002,8 @@ void Staff_page(void){
 void add_customer(void){
 
 	char name[21] , lname[21] , sub_date[11] , id[11];
-	char tel[13] , email[101] , user_name[21] ;
-	char password[21] ;
+	char tel[13] , email[101] , user_name[21];
+	char password[21] , n_password[21] ;
 	long long int gl_id = time(NULL);
 
 	printf("Name : ");
@@ -930,9 +1026,23 @@ void add_customer(void){
 	
 	printf("User Name : ");
 	scanf("%s" , user_name);
+	rep_user(user_name , 2);
 	
 	printf("Password : ");
 	scanf("%s" , password);
+	
+	printf("Enter Password again : ");
+	scanf("%s" , n_password);
+
+	if(strcmp(password , n_password) != 0){
+		printf("Passwords are not compatible!!!\n");
+
+
+		timer_sec(3);
+
+
+		Staff_page();
+	}
 	
 	FILE *customer_data , *user_pass ;
 
