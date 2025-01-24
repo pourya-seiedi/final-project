@@ -47,6 +47,7 @@ void rent_list(void);
 void return_book(void);
 void rep_user(char user[21] , int page);
 void email_val(char email[101] , int page);
+void id_val(char id[12] , int page);
 //---------------------------------------
 
 
@@ -3058,6 +3059,43 @@ void email_val(char email[101] , int page){
 
 
 		Staff_page();
+	}
+
+}
+
+
+
+
+void id_val(char id[12] , int page){
+
+	int track = 0 ;
+
+	if(strlen(id) > 11){
+		track++;
+	}
+
+	if( id[0] != 0 ){
+		track++;
+	}
+
+	if(track != 0 && page == 1){
+		printf("invalid id!!!");
+
+
+		timer_sec(3);
+
+
+		Admin_page();
+	}
+	
+	if(track != 0 && page == 2){
+ 		printf("invalid id!!!");
+
+
+	    timer_sec(3);
+
+
+	    Staff_page();
 	}
 
 }
