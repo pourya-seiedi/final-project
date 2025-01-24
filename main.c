@@ -46,6 +46,7 @@ void rent(void);
 void rent_list(void);
 void return_book(void);
 void rep_user(char user[21] , int page);
+void email_val(char email[101] , int page);
 //---------------------------------------
 
 
@@ -2962,3 +2963,101 @@ void timer_sec(int sec){
 
 
 
+void email_val(char email[101] , int page){
+	
+	char string[100] ;
+	strcpy(string , email);
+
+	int i , atsign = 0 , countatsign = 0 , len , dotcount = 0 , track = 0;
+	
+	
+
+	len = strlen(string);
+
+	for(i = 0 ; i < len ; i++){
+		
+		if(string[i] == 64){
+			
+			atsign = i ;
+			countatsign++;
+		}
+		
+		if(string[i] == 32){
+			track++;
+		}
+		
+		if( !(string[i] >= 65 && string[i] <= 90 || string[i] >= 97 && string[i] <= 122 || string[i] == 46 || string[i] == 45 || string[i] == 64 || string[i] == 43 || string[i] == 95 )){
+			track++;
+		}
+	}
+
+	
+	if(countatsign != 1){
+		track++;
+	}
+	
+	
+	for(i = 0 ; i < len - 1 ; i++){
+		if(string[i] == string[i+1] && string[i] == 46 ){
+			track++;
+		}
+		if(string[i] == 46 && i > atsign + 1){
+			dotcount++;
+		}
+	}
+
+	
+	if(dotcount == 0){
+		track++;
+	}
+
+	
+	if( !(string[0] >= 65 && string[0] <= 90 || string[0] >= 97 && string[0] <= 122 || string[0] >= 48 && string[0] <= 57) ){
+		track++;
+	}
+	
+	
+	if( !(string[len-1]>=65&&string[len-1]<=90||string[len-1]>=97&&string[len-1]<=122) ){
+		track++;
+	}
+	
+	
+	for(i = atsign + 1 ; i < len; i++){
+		if( !(string[i] >= 65 && string[i] <= 90 || string[i] >= 97 && string[i] <= 122 || string[i] == 46 || string[i] == 45)){
+			track;
+		}
+	}
+	
+	
+	if( !(string[atsign+1] >= 65 && string[atsign+1] <= 90 || string[atsign+1] >= 97 && string[atsign+1] <= 122 || string[atsign+1] >= 48 && string[atsign+1] <= 57) ){
+		track;
+	}
+
+	
+	if( !(string[atsign-1] >= 65 && string[atsign-1] <= 90 || string[atsign-1] >= 97 && string[atsign-1] <= 122 || string[atsign-1] >= 48 && string[atsign-1] <= 57) ){
+		track;
+	}
+
+
+	if(track != 0 && page == 1){
+		printf("email incorrect!!!\n");
+
+		
+		timer_sec(3);
+
+
+		Admin_page();
+	}
+
+
+	if(track != 0 && page == 2){
+		printf("email incorrect!!!\n");
+
+
+		timer_sec(3);
+
+
+		Staff_page();
+	}
+
+}
