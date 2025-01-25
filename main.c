@@ -2440,16 +2440,17 @@ void return_book(void){
 			strcpy(t->status , "GGG");
 		}
 		
-		fprintf(m_book , "%-5s" , t->status );
-		fprintf(m_book , "%-21s" , t->name );
-		fprintf(m_book , "%-21s" , t->publisher);
-		fprintf(m_book , "%-12s" , t->writer );
-		fprintf(m_book , "%-12s" , t->publish_date);
-		fprintf(m_book , "%-12s" , t->date);
-		fprintf(m_book ,  "%-15s" , t->bnumber);
-		fprintf(m_book , "%-21s" , t->user);
-		fprintf(m_book , "\n");
-
+		if(strcmp(t->status , "GGG") == 0 || strcmp(t->status , "YYY") == 0 || strcmp(t->status , "RRR") == 0){
+			fprintf(m_book , "%-5s" , t->status );
+			fprintf(m_book , "%-21s" , t->name );
+			fprintf(m_book , "%-21s" , t->publisher);
+			fprintf(m_book , "%-12s" , t->writer );
+			fprintf(m_book , "%-12s" , t->publish_date);
+			fprintf(m_book , "%-12s" , t->date);
+			fprintf(m_book ,  "%-15s" , t->bnumber);
+			fprintf(m_book , "%-21s" , t->user);
+			fprintf(m_book , "\n");
+		}
 
 		t = t->node;
 	}
@@ -2498,16 +2499,18 @@ void return_book(void){
 			strcpy(k->status , "GGG");
 		}
 		
-		fprintf(book , "%-5s" , k->status );
-		fprintf(book , "%-21s" , k->name );
-		fprintf(book , "%-21s" , k->publisher);
-		fprintf(book , "%-12s" , k->writer );
-		fprintf(book , "%-12s" , k->publish_date);
-		fprintf(book , "%-12s" , k->date);
-		fprintf(book ,  "%-15s" , k->bnumber);
-		fprintf(book , "%-21s" , k->user);
-		fprintf(book , "\n");
-
+		
+		if(strcmp(k->status , "GGG") == 0 || strcmp(k->status , "YYY") == 0 || strcmp(k->status , "RRR") == 0){
+			fprintf(book , "%-5s" , k->status );
+			fprintf(book , "%-21s" , k->name );
+			fprintf(book , "%-21s" , k->publisher);
+			fprintf(book , "%-12s" , k->writer );
+			fprintf(book , "%-12s" , k->publish_date);
+			fprintf(book , "%-12s" , k->date);
+			fprintf(book ,  "%-15s" , k->bnumber);
+			fprintf(book , "%-21s" , k->user);
+			fprintf(book , "\n");
+		}
 
 		k = k->node;
 	}
