@@ -51,6 +51,7 @@ void email_val(char email[101] , int page);
 void id_val(char id[12] , int page);
 void book_add_history(void);
 void sp_book_add_history(void);
+void members_book_history(void);
 
 //---------------------------------------
 
@@ -1940,6 +1941,9 @@ void staff_logs(void){
 			staff_logs();
 		
 		case 6:
+			members_book_history();
+			staff_logs();
+
 		case 7:
 		case 8:
 		
@@ -1953,6 +1957,76 @@ void staff_logs(void){
 	}
 
 }
+
+void members_book_history(void){
+
+	system("clear");
+
+	char username[21] ;
+
+	printf("unter member username :\n");
+	scanf("%s" , username);
+	
+	struct cu_data{
+		
+		char status[5] ;
+		char name[21] ;
+		char publisher[21] ;
+		char writer[21] ;
+		char publish_date[11] ;
+		char date[12] ;
+		char bnumber[12] ;
+		
+		// add book should be fixed
+		char user[21] ;
+		struct cu_data *node ;
+	
+	};
+
+	struct cu_data  *q , *d;
+	q = malloc(sizeof(struct cu_data));
+
+	struct cu_data *s , *t ;
+	s =  q ;
+	t = s ;
+
+	FILE *book ;
+	book = fopen("BOOK_HISTORY.txt" , "r");
+	rewind(book);
+	fflush(book);
+
+	while(1 > 0){	
+
+		if(feof(book) != 0 ){
+			break;
+		}
+	
+		d = malloc(sizeof(struct cu_data));
+
+		fscanf(book , "%s%s%s%s%s%s%s%s" , q->status , q->name ,  q->publisher , q->writer , q->publish_date , q->date , q->bnumber , q->user );
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
+
+	}
+
+	fclose(book);
+
+
+	while(t != NULL){
+		if(strcmp(t->user , username) == 0){
+			printf( "%-21s%-21s%-21s%-12s%-12s%-12s%-21s\n" , t->name ,  t->publisher , t->writer , t->publish_date , t->date , t->bnumber , t->user );
+		}
+
+		t = t->node;
+	}
+
+
+}
+
+
+
+
 
 
 void active_m(void){
