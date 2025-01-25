@@ -49,6 +49,9 @@ void return_book(void);
 void rep_user(char user[21] , int page);
 void email_val(char email[101] , int page);
 void id_val(char id[12] , int page);
+void book_add_history(void);
+void sp_book_add_history(void);
+
 //---------------------------------------
 
 
@@ -582,8 +585,7 @@ void admin_logs(){
 			ava_book_list();
 			admin_logs();
 
-		case 6:
-			
+		case 6:			
 			nva_book_list();
 			admin_logs();
 
@@ -594,10 +596,12 @@ void admin_logs(){
 		
 
 		case 9:
-		
+			book_add_history();
+			admin_logs();		
 
 		case 10:
-		
+			sp_book_add_history();
+			admin_logs();
 
 		case 11:
 		
@@ -613,6 +617,71 @@ void admin_logs(){
 	}
 	system("clear");
 }
+
+
+void book_add_history(void){
+
+	struct cu_data{
+		
+		char status[5] ;
+		char name[21] ;
+		char publisher[21] ;
+		char writer[21] ;
+		char publish_date[11] ;
+		char date[12] ;
+		char bnumber[12] ;
+		
+		// add book should be fixed
+		char user[21] ;
+		struct cu_data *node ;
+	
+	};
+
+	struct cu_data  *q , *d;
+	q = malloc(sizeof(struct cu_data));
+
+	struct cu_data *s , *t ;
+	s =  q ;
+	t = s ;
+
+	FILE *book ;
+	book = fopen("BOOK_DATA.txt" , "r");
+	rewind(book);
+	fflush(book);
+
+	while(1 > 0){	
+
+		if(feof(book) != 0 ){
+			break;
+		}
+	
+		d = malloc(sizeof(struct cu_data));
+
+		fscanf(book , "%s%s%s%s%s%s%s%s" , q->status , q->name ,  q->publisher , q->writer , q->publish_date , q->date , q->bnumber , q->user );
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
+
+	}
+
+	fclose(book);
+
+
+	while(t != NULL){
+		printf( "%-21s%-21s%-21s%-12s%-12s%-12s%-21s\n" , t->name ,  t->publisher , t->writer , t->publish_date , t->date , t->bnumber , t->user );
+
+		t = t->node;
+	}
+
+
+
+}
+
+
+
+
+void sp_book_add_history(void){}
+
 
 
 void fired_staff_list(void){
