@@ -236,6 +236,7 @@ void ADMIN(void){
 	}
 	else{
 		system("clear");
+		log_history();
 		menu();
 	}
 	
@@ -3347,6 +3348,12 @@ void log_history(void){
 	fflush(tmp);
 
 
+	struct tm* ptr;
+    time_t tp;
+    tp = time(NULL);
+    ptr = localtime(&tp);
+	
+	
 	struct data{
 
 		char type[10] ;
@@ -3361,8 +3368,58 @@ void log_history(void){
 		struct data *node ;
 	};
 	
+	
+	struct data  *q , *d;
+	q = malloc(sizeof(struct data));
+
+	struct data *s , *t ;
+	s =  q ;
+	t = s ;
+		
+
+	while(1 > 0){
+
+		if(feof(tmp) != 0){
+			break;
+		}
+
+		d = malloc(sizeof(struct data));
 
 
+		fscanf(tmp , "%s%s%s%s%s%s%s" , q->type , q->user , q->day , q->mon , q->d_date , q->time , q->year);
 
+		q->node = d ;
+		q = d ;
+		d->node = NULL ;
+
+	}
+
+	fclose(tmp);
+
+
+	FILE *log ; 
+	log = fopen("LOG.txt" , "a");
+	rewind(log);
+	fflush(log);
+
+	while (t != NULL)
+	{
+
+		if(strcmp(t->type , "STAFF") == 0 || strcmp(t->type , "MEMBER") == 0){
+	
+			fprintf(log , "%-10s" , t->type);
+			fprintf(log , "%-21s" , t->user);
+			fprintf(log , "%s " , t->day);
+			fprintf(log , "%s " , t->mon);
+			fprintf(log , "%s " , t->d_date);
+			fprintf(log , "%s " , t->time);
+			fprintf(log , "%s\t" , t->year);
+			fprintf(log , "%s" , asctime(ptr));
+			fprintf(log , "\n");
+
+		}
+
+		t = t->node;
+	}
 
 }
