@@ -51,7 +51,8 @@ void id_val(char id[12] , int page);
 void book_add_history(void);
 void sp_book_add_history(void);
 void members_book_history(void);
-
+void entry_logs(char user[21] , char type[10]);
+void log_history(void);
 //---------------------------------------
 
 
@@ -1013,6 +1014,8 @@ void nva_book_list(void){
 
 void staff_check(void){
 
+	char type[10] = "STAFF" ;
+
 
 	struct users{
 		char status[4] ;
@@ -1066,6 +1069,7 @@ void staff_check(void){
 		if(strcmp(t->status , "ACT") == 0 && strcmp(t->user_name , user) == 0 && strcmp(t->password , pass) == 0){
 			system("clear");
 			active_user(user , pass);
+			entry_logs(user , type);
 			Staff_page();
 		}
 
@@ -3304,5 +3308,61 @@ void id_val(char id[12] , int page){
 
 	    Staff_page();
 	}
+
+}
+
+
+
+
+void entry_logs(char user[21] , char type[10]){
+
+	struct tm* ptr;
+    time_t t;
+    t = time(NULL);
+    ptr = localtime(&t);
+
+	
+	FILE *tmp ;
+	tmp = fopen("tmp.txt" , "a");
+	rewind(tmp);
+	fflush(tmp);
+
+
+	fprintf(tmp , "%-15s" , type );
+	fprintf(tmp , "%-21s" , user);
+	fprintf(tmp , "%-20s" , asctime(ptr));
+
+
+	fclose(tmp);
+
+}
+
+
+void log_history(void){
+
+
+	FILE *tmp ;
+	tmp = fopen("tmp.txt" , "r");
+	rewind(tmp);
+	fflush(tmp);
+
+
+	struct data{
+
+		char type[10] ;
+		char user[21] ;
+		char day[5] ;
+		char mon[5] ;
+		char d_date[3] ;
+		char time[10] ;
+		char year[5] ; 
+
+
+		struct data *node ;
+	};
+	
+
+
+
 
 }
