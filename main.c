@@ -3414,7 +3414,6 @@ void log_history(void){
 			fprintf(log , "%s " , t->d_date);
 			fprintf(log , "%s " , t->time);
 			fprintf(log , "%s\t" , t->year);
-			fprintf(log , "%s" , asctime(ptr));
 			fprintf(log , "\n");
 
 		}
@@ -3423,3 +3422,6 @@ void log_history(void){
 	}
 
 }
+
+
+
