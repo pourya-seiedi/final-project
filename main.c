@@ -57,6 +57,10 @@ void entry_logs(char user[21] , char type[10]);
 void log_history(void);
 void book_limit(void);
 void book_history_date(void);
+void member_sign_history(void);
+void ex_members(void);
+void re_sub(void);
+void sub_extend(void);
 
 //---------------------------------------
 
@@ -726,8 +730,8 @@ void book_history_date(void){
 	printf("yy/mm/dd\n");
 	scanf("%d%d%d" , &y2 , &m2 , &d2);
 
-	date1 = (y1-1966)*12*30*24*60*60 + (m1-1)*30*24*60*60 + (d1-1)*24*60*60 ;	
-	date2 = (y2-1966)*12*30*24*60*60 + (m2-1)*30*24*60*60 + (d2-1)*24*60*60 ;	
+	date1 = (y1-1966-3)*12*30*24*60*60 + (m1-3)*30*24*60*60 + (d1-3)*24*60*60 ;	
+	date2 = (y2-1966-3)*12*30*24*60*60 + (m2-3)*30*24*60*60 + (d2-3)*24*60*60 ;	
 
 	struct cu_data{
 		
@@ -1267,6 +1271,7 @@ void Staff_page(void){
 	printf("Enter Your Choice : \n");
 	scanf("%d" , &page);
 
+	system("clear");
 
 	switch(page){
 		case 1 :
@@ -1274,6 +1279,8 @@ void Staff_page(void){
 			Staff_page();
 
 		case 2 :
+			sub_extend();
+			Staff_page();
 
 		case 3 :
 			customer_list();
@@ -1302,6 +1309,210 @@ void Staff_page(void){
 			printf("Please enter Number 1 to 8!!!");
 			exit(0);
 	}
+}
+
+
+void sub_extend(void){
+
+	int page ;
+
+	printf("\n\nsubscription menu\n\n");
+
+	printf("1 - Expired Members List\n");
+	printf("2 - Re-Sub\n");
+	printf("3 - Return\n");
+
+	printf("Enter Your Choice\n");
+	scanf("%d" , &page);
+
+	system("clear");
+
+
+	switch (page){
+	case 1:
+		ex_members();
+		sub_extend();
+		
+	case 2:
+		re_sub();
+		sub_extend();
+	
+	case 3:
+		system("clear");
+		Staff_page();
+
+	default:
+		printf("Please Enter a Number From 1 tp 3!!!!\n");
+		break;
+	}
+}
+
+void ex_members(void){
+
+	struct cu_data{
+		
+		char status[4] ;
+		char name[21] ;
+		char lname[21] ;
+		char hire_date[11] ;
+		char id[12] ;
+		char tel[13] ;
+		char email[101] ;
+		char gl_id[15] ;
+		struct cu_data *node ;
+	
+	};
+
+	struct cu_data  *q , *d;
+	q = malloc(sizeof(struct cu_data));
+
+	struct cu_data *s , *t ;
+	s =  q ;
+	t = s ;
+
+	FILE *customer_data ;
+	customer_data = fopen("CUSTOMER_DATA.txt" , "r");
+	rewind(customer_data);
+	fflush(customer_data);
+
+	while(1 > 0){
+	
+		d = malloc(sizeof(struct cu_data));
+		
+		if(feof(customer_data) != 0 ){
+			break;
+		}
+
+		fscanf(customer_data , "%s%s%s%s%s%s%s%s" , q->status , q->name ,  q->lname , q->id , q->hire_date , q->tel , q->email , q->gl_id);
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
+		
+
+	}
+
+	fclose(customer_data);
+
+
+	customer_data = fopen("CUSTOMER_DATA.txt" , "w");
+	rewind(customer_data);
+	fflush(customer_data);
+
+
+	while (t != NULL){
+
+		// member sub expire
+		if(time(NULL) - atoll(t->hire_date) >= 31536000 && (strcmp(t->status , "ACT") == 0 || strcmp(t->status , "DCT") == 0 || strcmp(t->status , "MSE") == 0) ){
+			strcpy(t->status , "MSE");
+			printf("%-5s%-21s%-21s%-12s%-12s%-12s%-25s%-12s\n" , t->status , t->name ,  t->lname , t->id , "----" , t->tel , t->email , t->gl_id);
+		}
+		if(strcmp(t->status , "ACT") == 0 || strcmp(t->status , "DCT") == 0 || strcmp(t->status , "MSE") == 0){
+			fprintf(customer_data , "%-5s" , t->status );
+			fprintf(customer_data , "%-20s" , t->name );
+			fprintf(customer_data , "%-20s" , t->lname );
+			fprintf(customer_data , "%-10s" , t->id );
+			fprintf(customer_data , "%-15s" , t->hire_date );
+			fprintf(customer_data , "%-15s" , t->tel );
+			fprintf(customer_data , "%-25s" , t->email);
+			fprintf(customer_data , "%-15s" , t->gl_id);
+			fprintf(customer_data , "\n");
+		}	
+
+		t = t->node ; 		
+	}
+
+	fclose(customer_data);		
+}
+void re_sub(void){
+
+	char id[15] ;
+
+	printf("Enter User Id\n");
+	scanf("%s" , id);
+
+	struct cu_data{
+		
+		char status[4] ;
+		char name[21] ;
+		char lname[21] ;
+		char hire_date[11] ;
+		char id[12] ;
+		char tel[13] ;
+		char email[101] ;
+		char gl_id[15] ;
+		struct cu_data *node ;
+	
+	};
+
+	struct cu_data  *q , *d;
+	q = malloc(sizeof(struct cu_data));
+
+	struct cu_data *s , *t ;
+	s =  q ;
+	t = s ;
+
+	FILE *customer_data ;
+	customer_data = fopen("CUSTOMER_DATA.txt" , "r");
+	rewind(customer_data);
+	fflush(customer_data);
+
+	while(1 > 0){
+	
+		d = malloc(sizeof(struct cu_data));
+		
+		if(feof(customer_data) != 0 ){
+			break;
+		}
+
+		fscanf(customer_data , "%s%s%s%s%s%s%s%s" , q->status , q->name ,  q->lname , q->id , q->hire_date , q->tel , q->email , q->gl_id);
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
+		
+
+	}
+
+	fclose(customer_data);
+
+
+	customer_data = fopen("CUSTOMER_DATA.txt" , "w");
+	rewind(customer_data);
+	fflush(customer_data);
+
+
+	while (t != NULL){
+
+		if(strcmp(id , t->gl_id) == 0 && (strcmp(t->status , "ACT") == 0 || strcmp(t->status , "DCT") == 0 || strcmp(t->status , "MSE") == 0) ){
+			
+			fprintf(customer_data , "%-5s" , "ACT");
+			fprintf(customer_data , "%-20s" , t->name);
+			fprintf(customer_data , "%-20s" , t->lname);
+			fprintf(customer_data , "%-10s" , t->id );
+			fprintf(customer_data , "%-15ld" , time(NULL));
+			fprintf(customer_data , "%-15s" , t->tel );
+			fprintf(customer_data , "%-25s" , t->email);
+			fprintf(customer_data , "%-15s" , t->gl_id);
+			fprintf(customer_data , "\n");
+			
+		}
+		else{
+			if(strcmp(t->status , "ACT") == 0 || strcmp(t->status , "DCT") == 0 || strcmp(t->status , "MSE") == 0){
+				fprintf(customer_data , "%-5s" , t->status );
+				fprintf(customer_data , "%-20s" , t->name );
+				fprintf(customer_data , "%-20s" , t->lname );
+				fprintf(customer_data , "%-10s" , t->id );
+				fprintf(customer_data , "%-15s" , t->hire_date );
+				fprintf(customer_data , "%-15s" , t->tel );
+				fprintf(customer_data , "%-25s" , t->email);
+				fprintf(customer_data , "%-15s" , t->gl_id);
+				fprintf(customer_data , "\n");
+			}
+		}	
+		t = t->node ; 		
+	}
+
+	fclose(customer_data);	
+
 }
 
 
@@ -1361,7 +1572,7 @@ void add_customer(void){
 	fprintf(customer_data , "%-10s" , id);
 
 	// hire date - PASS
-	fprintf(customer_data , "%-10s" , "----" );
+	fprintf(customer_data , "%-12ld" , time(NULL) );
 	//---------
 	
 	fprintf(customer_data , "%-15s" , tel );
@@ -2118,7 +2329,13 @@ void staff_logs(void){
 			staff_logs();
 
 		case 7:
+			member_sign_history();
+			staff_logs();
+
+
 		case 8:
+			book_limit();
+			staff_logs();
 		
 		case 9:
 			system("clear");
@@ -2130,6 +2347,88 @@ void staff_logs(void){
 	}
 
 }
+
+void member_sign_history(void){
+
+
+	int y1 , m1 , d1 ;
+	int y2 , m2 , d2 ;
+
+	long long int date1 , date2 ; 
+
+
+
+	printf("yy/mm/dd\n");
+	scanf("%d%d%d" , &y1 , &m1 , &d1);
+
+	printf("yy/mm/dd\n");
+	scanf("%d%d%d" , &y2 , &m2 , &d2);
+
+	date1 = (y1-1966 - 3)*12*30*24*60*60 + (m1-3)*30*24*60*60 + (d1-3)*24*60*60 ;	
+	date2 = (y2-1966 - 3)*12*30*24*60*60 + (m2-3)*30*24*60*60 + (d2-3)*24*60*60 ;	
+
+	struct cu_data{
+		
+		char status[5] ;
+		char name[21] ;
+		char lname[21] ;
+		char id[21] ;
+		char date[11] ;
+		char tell[12] ;
+		char email[12] ;
+		char gl_id[21] ;
+		struct cu_data *node ;
+	
+	};
+	
+	
+	struct cu_data  *q , *d;
+	q = malloc(sizeof(struct cu_data));
+
+	struct cu_data *s , *t ;
+	s =  q ;
+	t = s ;
+
+	FILE *book ;
+	book = fopen("CUSTOMER_DATA.txt" , "r");
+	rewind(book);
+	fflush(book);
+
+
+	while(1 > 0){	
+
+		if(feof(book) != 0 ){
+			break;
+		}
+	
+		d = malloc(sizeof(struct cu_data));
+
+		fscanf(book , "%s%s%s%s%s%s%s%s" , q->status , q->name ,  q->lname , q->id , q->date , q->tell , q->email , q->gl_id );
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
+
+	}
+
+	fclose(book);
+
+
+	while (t != NULL){
+
+		if(atoll(t->date) <= date2 && atoll(t->date) >= date1 && (strcmp(t->status , "ACT") == 0 || strcmp(t->status , "DCT") == 0) ){
+			printf( "%-5s%-21s%-21s%-12s%-12s%-12s%-25s%-15s\n" , t->status , t->name ,  t->lname , t->id , "----" , t->tell , t->email , q->gl_id );
+		}	
+		t = t->node ; 
+	}
+
+
+}
+
+
+
+
+
+
 
 void members_book_history(void){
 
