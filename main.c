@@ -61,6 +61,11 @@ void member_sign_history(void);
 void ex_members(void);
 void re_sub(void);
 void sub_extend(void);
+void pass_val(char pass[21]);
+void name_val(char name[21]);
+void lname_val(char name[21]);
+
+
 
 //---------------------------------------
 
@@ -301,16 +306,16 @@ void Add_Staff(void){
 	char name[21] , lname[21] , hire_date[11] , id[11];
 	char tel[13] , email[101] , user_name[21] ;
 	char password[21] , n_password[21] ;
-	long long int gl_id = time(NULL);
+	long int gl_id = time(NULL);
 
 
 	printf("Name : ");
 	scanf("%s" , name);
-
+	//name_val(name);
 
 	printf("Last Name : ");
 	scanf("%s" , lname);
-
+	//lname_val(lname);
 
 	printf("ID : ");
 	scanf("%s" , id);
@@ -321,13 +326,17 @@ void Add_Staff(void){
 	
 	printf("Email : ");
 	scanf("%s" , email);
-	
-	printf("User Name : ");
+	//email_val(email , 1);
+
+	//getchar();
+
+	printf("User Name :");
 	scanf("%s" , user_name);
-	rep_user(user_name , 1);
+	//rep_user(user_name , 1);
 	
 	printf("Password : ");
 	scanf("%s" , password);
+	//pass_val(password);
 	
 	printf("Enter Password Again: ");
 	scanf("%s" , n_password);
@@ -353,12 +362,12 @@ void Add_Staff(void){
 	fprintf(staff_data , "%-12s" , id);
 
 	// hire date - PASS
-	fprintf(staff_data , "%-12s" , "----" );
+	fprintf(staff_data , "%-15ld" , time(NULL));
 	//---------
 	
 	fprintf(staff_data , "%-12s" , tel );
 	fprintf(staff_data , "%-50s" , email);
-	fprintf(staff_data , "%-15lld" , gl_id);
+	fprintf(staff_data , "%-15ld" , gl_id);
 	fprintf(staff_data , "\n");
 
 
@@ -367,7 +376,7 @@ void Add_Staff(void){
 
 	user_pass = fopen("STAFF_PASS.txt" , "a");
 	
-	fprintf(user_pass , "%-5s%-21s%-21s%-15lld\n" , "ACT" , user_name , password , gl_id);
+	fprintf(user_pass , "%-5s%-21s%-21s%-15ld\n" , "ACT" , user_name , password , gl_id);
 	
 	fclose(user_pass);
 	system("clear");
@@ -461,7 +470,7 @@ void delete_staff(void){
 
 	while(t != NULL){
 			
-		if(strcmp(t->id , staff_id) == 0){
+		if(strcmp(t->global_id, staff_id) == 0){
 			strcpy(t->status , "DCT");
 		}
 		
@@ -470,7 +479,7 @@ void delete_staff(void){
 			fprintf(staff_data , "%-21s" , t->name );
 			fprintf(staff_data , "%-21s" , t->lname );
 			fprintf(staff_data , "%-12s" , t->id );
-			fprintf(staff_data , "%-11s" , t->hire_date );
+			fprintf(staff_data , "%-15ld" , time(NULL));
 			fprintf(staff_data , "%-13s" , t->tel );
 			fprintf(staff_data , "%-50s" , t->email);
 			fprintf(staff_data , "%-15s" , t->global_id);
@@ -617,6 +626,8 @@ void admin_logs(){
 			admin_logs();
 
 		case 11:
+			system("cat tmp.txt");
+			admin_logs();
 		
 
 		case 12:
@@ -687,9 +698,15 @@ void book_limit(void){
 	fflush(book);
 
 	while (t != NULL){
+		struct tm* tl;
+    	time_t ts;
+    	ts = atol(t->date);
+    	tl = localtime(&ts);
+
+
 		if(time(NULL) - atoll(t->date) >= 2592000 && ( strcmp(t->status , "YYY") == 0 || strcmp(t->status , "RRR") == 0) ){
 			strcpy(t->status , "RRR");
-			printf( "%-5s%-21s%-21s%-21s%-12s%-12s%-12s%-21s\n" , t->status , t->name ,  t->publisher , t->writer , t->publish_date , "----" , t->bnumber , t->user );
+			printf( "%-5s%-21s%-21s%-21s%-12s%-20s%-12s%-21s\n\n\n" , t->status , t->name ,  t->publisher , t->writer , t->publish_date , asctime(tl) , t->bnumber , t->user );
 		}
 		
 
@@ -782,9 +799,13 @@ void book_history_date(void){
 
 
 	while (t != NULL){
-
+		struct tm* tl;
+    	time_t ts;
+    	ts = atol(t->date);
+    	tl = localtime(&ts);	
+		
 		if(atoll(t->date) <= date2 && atoll(t->date) >= date1 && (strcmp(t->status , "GGG") == 0 || strcmp(t->status , "YYY") == 0|| strcmp(t->status , "RRR") == 0) ){
-			printf( "%-5s%-21s%-21s%-21s%-12s%-12s%-12s%-21s\n" , t->status , t->name ,  t->publisher , t->writer , t->publish_date , "----" , t->bnumber , t->user );
+			printf( "%-5s%-21s%-21s%-21s%-12s%-20s%-12s%-21s\n\n\n" , t->status , t->name ,  t->publisher , t->writer , t->publish_date , asctime(tl) , t->bnumber , t->user );
 		}	
 		t = t->node ; 
 	}
@@ -843,8 +864,15 @@ void book_add_history(void){
 
 
 	while(t != NULL){
-		printf( "%-21s%-21s%-21s%-12s%-12s%-12s%-21s\n" , t->name ,  t->publisher , t->writer , t->publish_date , t->date , t->bnumber , t->user );
 
+		struct tm* tl;
+		time_t ts;
+ 		ts = atol(t->date);
+   		tl= localtime(&ts);	
+	
+		if(strcmp(t->status , "GGG") == 0 || strcmp(t->status , "YYY") == 0 ||strcmp(t->status , "RRR") == 0 ){
+			printf( "%-21s%-21s%-21s%-12s%-20s%-12s%-21s\n\n\n" , t->name ,  t->publisher , t->writer , t->publish_date , asctime(tl) , t->bnumber , t->user );
+		}
 		t = t->node;
 	}
 
@@ -859,7 +887,7 @@ void sp_book_add_history(void){
 
 	char username[21] ;
 
-	printf("uner staff username :\n");
+	printf("staff username :\n");
 	scanf("%s" , username);
 	
 	struct cu_data{
@@ -909,8 +937,13 @@ void sp_book_add_history(void){
 
 
 	while(t != NULL){
+		struct tm* tl;
+ 		time_t ts;
+ 		ts = atol(t->date);
+ 		tl = localtime(&ts);
+
 		if(strcmp(t->user , username) == 0){
-			printf( "%-21s%-21s%-21s%-12s%-12s%-12s%-21s\n" , t->name ,  t->publisher , t->writer , t->publish_date , t->date , t->bnumber , t->user );
+			printf( "%-21s%-21s%-21s%-12s%-12s%-12s%-21s\n\n\n" , t->name ,  t->publisher , t->writer , t->publish_date , asctime(tl) , t->bnumber , t->user );
 		}
 
 		t = t->node;
@@ -970,12 +1003,17 @@ void fired_staff_list(void){
 	
 	while(t != NULL){
 		
+		struct tm* tl;
+ 	    time_t ts;
+ 	    ts = atol(t->hire_date);
+ 	    tl = localtime(&ts);
+
 		if(strcmp(t->status , "DCT") == 0){
 			printf("%-5s" , t->status );
 			printf("%-20s" , t->name );
 			printf("%-20s" , t->lname );
 			printf("%-10s" , t->id );
-			printf("%-10s" , t->hire_date );
+			printf("%-20s" , asctime(tl));
 			printf("%-15s" , t->tel );
 			printf("%-25s" , t->email);
 			printf("%-15s" , t->gl_id);
@@ -1071,16 +1109,20 @@ void ava_book_list(void){
 	while(t != NULL){
 
 		if(strcmp(t->status , "GGG") == 0){
+			struct tm* tl;
+   			time_t ts;
+    		ts = atol(t->date);
+    		tl = localtime(&ts);	
 			
 			printf("%-5s" , t->status );
 			printf("%-20s" , t->name );
 			printf("%-20s" , t->publisher );
 			printf("%-10s" , t->writer );
 			printf("%-10s" , t->publish_date );
-			printf("%-15s" , t->date );
-			printf("%-25s" , t->bnumber);
+			printf("%-25s" , asctime(tl));
+			printf("%-21s" , t->bnumber);
 			printf("%-21s" , t->user);
-			printf("\n");
+			printf("\n\n\n");
 
 		}
 		t = t->node;
@@ -1143,16 +1185,20 @@ void nva_book_list(void){
 	while(t != NULL){
 
 		if(strcmp(t->status , "YYY") == 0 || strcmp(t->status , "RRR") == 0){
+			struct tm* tl;
+   			time_t ts;
+    		ts = atol(t->date);
+    		tl = localtime(&ts);	
 			
 			printf("%-5s" , t->status );
 			printf("%-20s" , t->name );
 			printf("%-20s" , t->publisher );
 			printf("%-10s" , t->writer );
 			printf("%-10s" , t->publish_date );
-			printf("%-15s" , t->date );
+			printf("%-15s" , asctime(tl) );
 			printf("%-25s" , t->bnumber);
 			printf("%-21s" , t->user);
-			printf("\n");
+			printf("\n\n\n");
 
 		}
 		t = t->node;
@@ -1271,7 +1317,7 @@ void Staff_page(void){
 	printf("Enter Your Choice : \n");
 	scanf("%d" , &page);
 
-	system("clear");
+	//system("clear");
 
 	switch(page){
 		case 1 :
@@ -1525,11 +1571,11 @@ void add_customer(void){
 
 	printf("Name : ");
 	scanf("%s" , name);
-
+	name_val(name);
 
 	printf("Last Name : ");
 	scanf("%s" , lname);
-
+	lname_val(lname);
 
 	printf("ID : ");
 	scanf("%s" , id);
@@ -1540,6 +1586,7 @@ void add_customer(void){
 	
 	printf("Email : ");
 	scanf("%s" , email);
+	email_val(email , 2);
 	
 	printf("User Name : ");
 	scanf("%s" , user_name);
@@ -1547,7 +1594,8 @@ void add_customer(void){
 	
 	printf("Password : ");
 	scanf("%s" , password);
-	
+	pass_val(password);
+
 	printf("Enter Password again : ");
 	scanf("%s" , n_password);
 
@@ -1567,12 +1615,12 @@ void add_customer(void){
 
 	fflush(customer_data);
 	fprintf(customer_data , "%-5s" , "ACT");
-	fprintf(customer_data , "%-20s" , name);
-	fprintf(customer_data , "%-20s" , lname);
-	fprintf(customer_data , "%-10s" , id);
+	fprintf(customer_data , "%-21s" , name);
+	fprintf(customer_data , "%-21s" , lname);
+	fprintf(customer_data , "%-15s" , id);
 
 	// hire date - PASS
-	fprintf(customer_data , "%-12ld" , time(NULL) );
+	fprintf(customer_data , "%-15ld" , time(NULL) );
 	//---------
 	
 	fprintf(customer_data , "%-15s" , tel );
@@ -1668,7 +1716,7 @@ void add_book(void){
 
 
 		
-	fprintf(book_data , "%-10s" , "-----");
+	fprintf(book_data , "%-15ld" , time(NULL));
 
 	// book number
 	fprintf(book_data , "%-15ld" , time(NULL));
@@ -1747,16 +1795,16 @@ void delete_customer(void){
 
 	while(t != NULL){
 			
-		if(strcmp(t->id , cu_id) == 0){
+		if(strcmp(t->gl_id , cu_id) == 0){
 			strcpy(t->status , "DCT");
 		}
 		
 		if(strcmp(t->status , "ACT") == 0 || strcmp(t->status , "DCT") == 0){
 			fprintf(customer_data , "%-5s" , t->status );
-			fprintf(customer_data , "%-20s" , t->name );
-			fprintf(customer_data , "%-20s" , t->lname );
-			fprintf(customer_data , "%-10s" , t->id );
-			fprintf(customer_data , "%-10s" , t->hire_date );
+			fprintf(customer_data , "%-21s" , t->name );
+			fprintf(customer_data , "%-21s" , t->lname );
+			fprintf(customer_data , "%-15s" , t->id );
+			fprintf(customer_data , "%-15s" , t->hire_date );
 			fprintf(customer_data , "%-15s" , t->tel );
 			fprintf(customer_data , "%-25s" , t->email);
 			fprintf(customer_data , "%-15s" , t->gl_id);
@@ -1903,13 +1951,13 @@ void ch_pass(void){
 
 
 	if(strcmp(new_pass , pass) == 0){
-		printf("Please Enter New Password\n");
+		printf("operation done\n");
 		timer_sec(3);
 		setting();
 	}
 
 	if(strcmp(new_pass , pass_check) != 0){
-		printf("Wrong Password Confirmation\n");
+		printf("Wrong Password \n");
 		timer_sec(3);
 		setting();
 	}
@@ -2414,9 +2462,13 @@ void member_sign_history(void){
 
 
 	while (t != NULL){
-
+		struct tm* tl;
+ 	    time_t ts;
+    	ts = atol(t->date);
+    	tl = localtime(&ts);
+		
 		if(atoll(t->date) <= date2 && atoll(t->date) >= date1 && (strcmp(t->status , "ACT") == 0 || strcmp(t->status , "DCT") == 0) ){
-			printf( "%-5s%-21s%-21s%-12s%-12s%-12s%-25s%-15s\n" , t->status , t->name ,  t->lname , t->id , "----" , t->tell , t->email , q->gl_id );
+			printf( "%-5s%-21s%-21s%-12s%-20s%-12s%-25s%-15s\n\n\n" , t->status , t->name ,  t->lname , t->id , asctime(tl) , t->tell , t->email , q->gl_id );
 		}	
 		t = t->node ; 
 	}
@@ -2486,8 +2538,14 @@ void members_book_history(void){
 
 
 	while(t != NULL){
+		struct tm* tl;
+    	time_t ts;
+    	ts = time(NULL);
+    	tl = localtime(&ts);
+
+
 		if(strcmp(t->user , username) == 0){
-			printf( "%-21s%-21s%-21s%-12s%-12s%-12s%-21s\n" , t->name ,  t->publisher , t->writer , t->publish_date , t->date , t->bnumber , t->user );
+			printf( "%-5s%-21s%-21s%-21s%-12s%-12s%-12s%-21s\n\n\n" , t->status , t->name ,  t->publisher , t->writer , t->publish_date , asctime(tl) , t->bnumber , t->user );
 		}
 
 		t = t->node;
@@ -2513,6 +2571,7 @@ void active_m(void){
 		char id[12] ;
 		char tel[13] ;
 		char email[101] ;
+		char gl_id[20] ;
 		struct cu_data *node ;
 	
 	};
@@ -2533,7 +2592,7 @@ void active_m(void){
 	
 		d = malloc(sizeof(struct cu_data));
 
-		fscanf(m_data , "%s%s%s%s%s%s%s" , q->status , q->name ,  q->lname , q->id , q->hire_date , q->tel , q->email );
+		fscanf(m_data , "%s%s%s%s%s%s%s%s" , q->status , q->name ,  q->lname , q->id , q->hire_date , q->tel , q->email , q->gl_id );
 		q->node = d ;
 		q = d ;
 		d->node = NULL;
@@ -2548,16 +2607,22 @@ void active_m(void){
 	
 	
 	while(t != NULL){
+
+		struct tm* tl;
+    	time_t ts;
+    	ts = time(NULL);
+    	tl = localtime(&ts);
 		
 		if(strcmp(t->status , "ACT") == 0){
 			printf("%-5s" , t->status );
 			printf("%-20s" , t->name );
 			printf("%-20s" , t->lname );
 			printf("%-10s" , t->id );
-			printf("%-10s" , t->hire_date );
+			printf("%-20s" , asctime(tl));
 			printf("%-15s" , t->tel );
 			printf("%-25s" , t->email);
-			printf("\n");
+			printf("%-25s" , t->gl_id);
+			printf("\n\n\n");
 
 		}
 		t = t->node;
@@ -2574,6 +2639,7 @@ void fired_m(void){
 		char id[12] ;
 		char tel[13] ;
 		char email[101] ;
+		char gl_id[20];
 		struct cu_data *node ;
 	
 	};
@@ -2594,7 +2660,7 @@ void fired_m(void){
 	
 		d = malloc(sizeof(struct cu_data));
 
-		fscanf(m_data , "%s%s%s%s%s%s%s" , q->status , q->name ,  q->lname , q->id , q->hire_date , q->tel , q->email );
+		fscanf(m_data , "%s%s%s%s%s%s%s%s" , q->status , q->name ,  q->lname , q->id , q->hire_date , q->tel , q->email , q->gl_id);
 		q->node = d ;
 		q = d ;
 		d->node = NULL;
@@ -2609,16 +2675,23 @@ void fired_m(void){
 	
 	
 	while(t != NULL){
+
+		struct tm* tl;
+    	time_t ts;
+    	ts = atol(t->hire_date);
+    	tl = localtime(&ts);
 		
 		if(strcmp(t->status , "FCT") == 0){
+
 			printf("%-5s" , t->status );
 			printf("%-20s" , t->name );
 			printf("%-20s" , t->lname );
 			printf("%-10s" , t->id );
-			printf("%-10s" , t->hire_date );
+			printf("%-20s" , asctime(tl) );
 			printf("%-15s" , t->tel );
 			printf("%-25s" , t->email);
-			printf("\n");
+			printf("%-20s" , t->gl_id);
+			printf("\n\n\n");
 
 		}
 		t = t->node;
@@ -2638,6 +2711,7 @@ void deactive_m(void){
 		char id[12] ;
 		char tel[13] ;
 		char email[101] ;
+		char gl_id[20] ;
 		struct cu_data *node ;
 	
 	};
@@ -2655,34 +2729,39 @@ void deactive_m(void){
 	fflush(m_data);
 
 	while(1 > 0){
-	
-		d = malloc(sizeof(struct cu_data));
-
-		fscanf(m_data , "%s%s%s%s%s%s%s" , q->status , q->name ,  q->lname , q->id , q->hire_date , q->tel , q->email );
-		q->node = d ;
-		q = d ;
-		d->node = NULL;
-
 		if(feof(m_data) != 0 ){
 			break;
 		}
 
-	}
 
+	
+		d = malloc(sizeof(struct cu_data));
+
+		fscanf(m_data , "%s%s%s%s%s%s%s%s" , q->status , q->name ,  q->lname , q->id , q->hire_date , q->tel , q->email , q->gl_id );
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
+
+	}
 	fclose(m_data);
 	
 	
 	while(t != NULL){
+		struct tm* tl;
+    	time_t ts;
+		ts = atol(t->hire_date);
+ 	    tl = localtime(&ts);
 		
-			if(strcmp(t->status , "DCT") == 0){
+		if(strcmp(t->status , "DCT") == 0){
 			printf("%-5s" , t->status );
 			printf("%-20s" , t->name );
 			printf("%-20s" , t->lname );
 			printf("%-10s" , t->id );
-			printf("%-10s" , t->hire_date );
+			printf("%-20s" , asctime(tl) );
 			printf("%-15s" , t->tel );
 			printf("%-25s" , t->email);
-			printf("\n");
+			printf("%-25s" , t->gl_id);
+			printf("\n\n\n");
 
 		}
 		t = t->node;
@@ -2697,6 +2776,8 @@ void deactive_m(void){
 
 
 void customer_check(void){
+
+	char type[10] = "MEMBER";
 
 	struct users{
 		char status[4] ;
@@ -2750,6 +2831,7 @@ void customer_check(void){
 		if(strcmp(t->status , "ACT") == 0 && strcmp(t->user_name , user) == 0 && strcmp(t->password , pass) == 0){
 			system("clear");
 			active_user(user , pass);
+			entry_logs(user , type);
 			customer_page();
 		}
 
@@ -3030,16 +3112,21 @@ void rent_list(void){
 	while(t != NULL){
 
 		if(strcmp(t->user , user ) == 0){
-
+			
+			struct tm* ptr;
+   			time_t ts;
+    		ts = atol(t->date);
+    		ptr = localtime(&ts);	
+			
 			printf("%-5s" , t->status );
 			printf("%-21s" , t->name );
 			printf("%-21s" , t->publisher);
 			printf("%-12s" , t->writer );
 			printf("%-12s" , t->publish_date);
-			printf("----\t");
+			printf("%-20s" , asctime(ptr));
 			printf("%-15s" , t->bnumber);
 			printf("%-21s" , t->user);
-			printf("\n");
+			printf("\n\n\n");
 
 		}
 
@@ -3891,5 +3978,54 @@ void log_history(void){
 
 }
 
+void pass_val(char pass[21]){
+	if(strlen(pass) < 10){
+		printf("Please Enter Longer Password");
 
+		timer_sec(3);
+
+		menu();
+	}
+
+	int alpha_char = 0 ;
+	for(int i = 0 ; i < strlen(pass) ; i++){
+		if(pass[i] >= 65 && pass[i] <= 90 || pass[i] >= 97 && pass[i] <= 122){
+			alpha_char++;
+		}
+	}
+
+
+	int o_char = 0 ;
+	for(int i = 0 ; i < strlen(pass) ; i++){
+		if(pass[i] == 35 || pass[i] == 36  || pass[i] == 45 || pass[i] == 95){
+			o_char++;
+		}
+	}
+
+	if(alpha_char == 0 && o_char == 0){
+		printf("Password is Weak!!!\n");
+		menu();
+	}
+
+
+}
+void name_val(char name[21]){
+
+	for(int i = 0 ; i < strlen(name) ; i++){
+		if( !(name[i] >= 65 && name[i] <= 90 || name[i] >= 97 && name[i] <= 122) ){
+			printf("name should contain only letters!!!\n");
+			menu();
+		}
+	}
+
+
+}
+void lname_val(char name[21]){
+	for(int i = 0 ; i < strlen(name) ; i++){
+		if( !(name[i] >= 65 && name[i] <= 90 || name[i] >= 97 && name[i] <= 122) ){
+			printf("name should contain only letters!!!\n");
+			menu();
+		}
+	}
+}
 
