@@ -54,6 +54,9 @@ void sp_book_add_history(void);
 void members_book_history(void);
 void entry_logs(char user[21] , char type[10]);
 void log_history(void);
+void book_limit(void);
+void book_history_date(void);
+
 //---------------------------------------
 
 
@@ -593,10 +596,12 @@ void admin_logs(){
 			admin_logs();
 
 		case 7:
-		
+			book_limit();
+			admin_logs();
 
 		case 8:
-		
+			book_history_date();
+			admin_logs();
 
 		case 9:
 			book_add_history();
@@ -620,6 +625,168 @@ void admin_logs(){
 	}
 	system("clear");
 }
+
+
+void book_limit(void){
+
+	struct cu_data{
+		
+		char status[5] ;
+		char name[21] ;
+		char publisher[21] ;
+		char writer[21] ;
+		char publish_date[11] ;
+		char date[12] ;
+		char bnumber[12] ;
+		
+		// add book should be fixed
+		char user[21] ;
+		struct cu_data *node ;
+	
+	};
+	
+	
+	struct cu_data  *q , *d;
+	q = malloc(sizeof(struct cu_data));
+
+	struct cu_data *s , *t ;
+	s =  q ;
+	t = s ;
+
+	FILE *book ;
+	book = fopen("BOOK_HISTORY.txt" , "r");
+	rewind(book);
+	fflush(book);
+
+
+	while(1 > 0){	
+
+		if(feof(book) != 0 ){
+			break;
+		}
+	
+		d = malloc(sizeof(struct cu_data));
+
+		fscanf(book , "%s%s%s%s%s%s%s%s" , q->status , q->name ,  q->publisher , q->writer , q->publish_date , q->date , q->bnumber , q->user );
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
+
+	}
+
+	fclose(book);
+
+
+	book = fopen("BOOK_HISTORY.txt" , "w");
+	rewind(book);
+	fflush(book);
+
+	while (t != NULL){
+		if(time(NULL) - atoll(t->date) >= 2592000 && ( strcmp(t->status , "YYY") == 0 || strcmp(t->status , "RRR") == 0) ){
+			strcpy(t->status , "RRR");
+			printf( "%-5s%-21s%-21s%-21s%-12s%-12s%-12s%-21s\n" , t->status , t->name ,  t->publisher , t->writer , t->publish_date , "----" , t->bnumber , t->user );
+		}
+		
+
+		if(strcmp(t->status , "GGG") == 0 || strcmp(t->status , "YYY") == 0|| strcmp(t->status , "RRR") == 0){
+			fprintf(book , "%-5s" , t->status );
+			fprintf(book , "%-21s" , t->name );
+			fprintf(book , "%-21s" , t->publisher);
+			fprintf(book , "%-12s" , t->writer );
+			fprintf(book , "%-12s" , t->publish_date);
+			fprintf(book , "%-12s" , t->date);
+			fprintf(book ,  "%-15s" , t->bnumber);
+			fprintf(book , "%-21s" , t->user);
+			fprintf(book , "\n");
+
+		}
+		t = t->node ; 
+	}
+	
+	fclose(book);
+
+}
+
+
+
+
+void book_history_date(void){
+
+	int y1 , m1 , d1 ;
+	int y2 , m2 , d2 ;
+
+	long long int date1 , date2 ; 
+
+
+
+	printf("yy/mm/dd\n");
+	scanf("%d%d%d" , &y1 , &m1 , &d1);
+
+	printf("yy/mm/dd\n");
+	scanf("%d%d%d" , &y2 , &m2 , &d2);
+
+	date1 = (y1-1966)*12*30*24*60*60 + (m1-1)*30*24*60*60 + (d1-1)*24*60*60 ;	
+	date2 = (y2-1966)*12*30*24*60*60 + (m2-1)*30*24*60*60 + (d2-1)*24*60*60 ;	
+
+	struct cu_data{
+		
+		char status[5] ;
+		char name[21] ;
+		char publisher[21] ;
+		char writer[21] ;
+		char publish_date[11] ;
+		char date[12] ;
+		char bnumber[12] ;
+		
+		// add book should be fixed
+		char user[21] ;
+		struct cu_data *node ;
+	
+	};
+	
+	
+	struct cu_data  *q , *d;
+	q = malloc(sizeof(struct cu_data));
+
+	struct cu_data *s , *t ;
+	s =  q ;
+	t = s ;
+
+	FILE *book ;
+	book = fopen("BOOK_HISTORY.txt" , "r");
+	rewind(book);
+	fflush(book);
+
+
+	while(1 > 0){	
+
+		if(feof(book) != 0 ){
+			break;
+		}
+	
+		d = malloc(sizeof(struct cu_data));
+
+		fscanf(book , "%s%s%s%s%s%s%s%s" , q->status , q->name ,  q->publisher , q->writer , q->publish_date , q->date , q->bnumber , q->user );
+		q->node = d ;
+		q = d ;
+		d->node = NULL;
+
+	}
+
+	fclose(book);
+
+
+	while (t != NULL){
+
+		if(atoll(t->date) <= date2 && atoll(t->date) >= date1 && (strcmp(t->status , "GGG") == 0 || strcmp(t->status , "YYY") == 0|| strcmp(t->status , "RRR") == 0) ){
+			printf( "%-5s%-21s%-21s%-21s%-12s%-12s%-12s%-21s\n" , t->status , t->name ,  t->publisher , t->writer , t->publish_date , "----" , t->bnumber , t->user );
+		}	
+		t = t->node ; 
+	}
+}
+
+
+
 
 
 void book_add_history(void){
@@ -2471,7 +2638,7 @@ void rent(void){
 			fprintf(m_book , "%-21s" , t->publisher);
 			fprintf(m_book , "%-12s" , t->writer );
 			fprintf(m_book , "%-12s" , t->publish_date);
-			fprintf(m_book , "%-12s" , t->date);
+			fprintf(m_book , "%-12ld" , time(NULL));
 			fprintf(m_book ,  "%-15s" , t->bnumber);
 			fprintf(m_book , "%-21s" , user);
 			fprintf(m_book , "\n");
@@ -2569,7 +2736,7 @@ void rent_list(void){
 			printf("%-21s" , t->publisher);
 			printf("%-12s" , t->writer );
 			printf("%-12s" , t->publish_date);
-			printf("%-12s" , t->date);
+			printf("----\t");
 			printf("%-15s" , t->bnumber);
 			printf("%-21s" , t->user);
 			printf("\n");
