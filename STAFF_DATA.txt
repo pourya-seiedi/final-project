@@ -1,3 +1,0 @@
-DCT  pori                 seiedi               3459786     1738350575     3459786      pori@gmail.com                                    1738350128     
-ACT  reza                 sahraei              12345       1738350575     345636       reza@gmail.com                                    1738350240     
-ACT  sinqa                khademi              34576       1738350575     978234       sina@gmail.com                                    1738350409     
